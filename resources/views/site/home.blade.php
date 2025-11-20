@@ -7,9 +7,7 @@
      <link rel="stylesheet" href="{{ asset('css/site.css') }}">
 </head> 
 <body>
-
-<x-navigation>
-</x-navigation>
+    <x-navigation></x-navigation>
 
     <!-- Hero Section -->
     <div class="hero">
@@ -64,9 +62,7 @@
     </div>
 
     <!-- Footer -->
-    <footer>
-        <p>&copy; Copyright 2024 Universitas Airlangga. All Rights Reserved</p>
-    </footer>
+    <x-footer></x-footer>
 
 </body>
 </html>

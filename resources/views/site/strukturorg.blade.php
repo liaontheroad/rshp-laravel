@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="{{ asset('css/site.css') }}">
 </head>
 <body>
-
     <x-navigation></x-navigation>
 
     <main class="page-container">

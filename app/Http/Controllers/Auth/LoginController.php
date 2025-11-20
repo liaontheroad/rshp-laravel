@@ -49,6 +49,11 @@ class LoginController extends Controller
         return view('auth.login');
     }
 
+        protected function loggedOut(Request $request)
+    {
+        return redirect()->route('home');
+    }
+
     public function login(Request $request)
 {
     // 1. Validasi input email dan password
@@ -116,5 +121,19 @@ class LoginController extends Controller
         default: // Pemilik (atau role lain yang tidak spesifik)
             return redirect()->route('pemilik.dashboard')->with('success', 'Login berhasil');
         }
+    }
+
+    /**
+     * Log the user out of the application.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function logout(Request $request)
+    {
+        $this->guard()->logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        return $this->loggedOut($request) ?: redirect('/');
     }
 }

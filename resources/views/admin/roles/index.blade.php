@@ -1,24 +1,66 @@
-<table border="1" cellspacing="0" cellpadding="8">
+@extends('layouts.app')
+
+@section('content')
+<div class="page-container">
+    <div class="page-header">
+        <h1>Manajemen Role (Jabatan)</h1>
+        <p>Kelola daftar role pengguna yang terdaftar di sistem.</p>
+    </div>
+
+    <div class="main-content">
+        @if (session('success'))
+            <div class="alert alert-success" role="alert">
+                {{ session('success') }}
+            </div>
+        @endif
+        
+        @if (session('error'))
+            <div class="alert alert-danger" role="alert">
+                {{ session('error') }}
+            </div>
+        @endif
+
+        {{-- Button Tambah --}}
+        <a href="{{ route('admin.roles.create') }}" class="add-btn">
+            <i class="fas fa-plus"></i> Tambah Role Baru
+        </a>
+
+        <table class="data-table">
             <thead>
                 <tr>
-                    <th>ID User</th>
-                    <th>Nama Pengguna</th>
-                    <th>Role yang Dimiliki</th>
+                    <th>ID</th>
+                    <th>Nama Role</th>
+                    <th>Aksi</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach ($users as $user)
+                @forelse ($roles as $item)
                 <tr>
-                    <td>{{ $user->iduser }}</td>
-                    <td>{{ $user->nama }}</td>
-                    <td>
-                        @foreach ($user->roles as $role)
-                            <span class="role-badge {{ $role->pivot->status == 1 ? 'role-active' : 'role-inactive' }}">
-                                {{ $role->nama_role }}
-                            </span>
-                        @endforeach
+                    <td>{{ $item->idrole }}</td>
+                    <td>{{ $item->nama_role }}</td>
+                    <td class="action-buttons">
+                        {{-- Button Edit --}}
+                        <a href="{{ route('admin.roles.edit', $item->idrole) }}" class="edit-btn">
+                            <i class="fas fa-edit"></i> Edit
+                        </a>
+
+                        {{-- Form Delete --}}
+                        <form action="{{ route('admin.roles.destroy', $item->idrole) }}" method="POST" style="display:inline-block;">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="delete-btn" onclick="return confirm('Apakah Anda yakin ingin menghapus role {{ $item->nama_role }}? Tindakan ini tidak dapat dibatalkan jika masih ada user terkait.')">
+                                <i class="fas fa-trash"></i> Hapus
+                            </button>
+                        </form>
                     </td>
                 </tr>
-                @endforeach
+                @empty
+                <tr>
+                    <td colspan="3" style="text-align: center;">Tidak ada data role yang terdaftar.</td>
+                </tr>
+                @endforelse
             </tbody>
         </table>
+    </div>
+</div>
+@endsection

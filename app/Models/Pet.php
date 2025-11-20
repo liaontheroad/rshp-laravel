@@ -9,30 +9,30 @@ class Pet extends Model
 {
     use HasFactory;
 
-    protected $table = 'pet'; // Nama tabel di database
-    protected $primaryKey = 'idpet'; // Primary key tabel
-    public $timestamps = false; // Jika tabel tidak memiliki kolom created_at dan updated_at
+    protected $table = 'pet'; 
+    protected $primaryKey = 'idpet'; 
+    public $timestamps = false;
 
     protected $fillable = [
-        'nama',
-        'tanggal_lahir',
-        'warna_tanda',
-        'jenis_kelamin',
-        'idpemilik',
-        'idras_hewan',
+        'nama', 
+        'idpemilik', 
+        'idjenis_hewan', 
+        'idras_hewan', 
+        'tanggal_lahir', 
+        'jenis_kelamin', 
+        'warna_tanda', 
     ];
 
-    /**
-     * Relasi dengan model Pemilik.
-     */
     public function pemilik()
     {
         return $this->belongsTo(Pemilik::class, 'idpemilik', 'idpemilik');
     }
 
-    /**
-     * Relasi dengan model RasHewan.
-     */
+    public function jenisHewan()
+    {
+        return $this->belongsTo(JenisHewan::class, 'idjenis_hewan', 'idjenis_hewan');
+    }
+
     public function rasHewan()
     {
         return $this->belongsTo(RasHewan::class, 'idras_hewan', 'idras_hewan');

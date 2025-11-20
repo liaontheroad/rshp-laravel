@@ -12,4 +12,9 @@ class JenisHewan extends Model
      
      //mematikan created_at dan updated_at 
      public $timestamps = false;
+
+      public function rasHewan()
+    {
+        return $this->hasMany(\App\Models\RasHewan::class, 'idjenis_hewan', 'idjenis_hewan');
+    }
 }

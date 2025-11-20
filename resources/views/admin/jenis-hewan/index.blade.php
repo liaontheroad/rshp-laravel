@@ -1,5 +1,25 @@
 @extends('layouts.app') 
 
+@push('styles')
+<style>
+    .action-buttons form {
+        display: inline-block;
+    }
+    .action-buttons .edit-btn,
+    .action-buttons .delete-btn {
+        padding: 6px 12px;
+        border-radius: 5px;
+        text-decoration: none;
+        color: white;
+        font-size: 14px;
+        font-weight: bold;
+        margin-right: 5px;
+        display: inline-block;
+        transition: all 0.3s ease;
+    }
+</style>
+@endpush
+
 @section('title', 'Daftar Jenis Hewan')
 
 @section('content')
@@ -11,10 +31,10 @@
 
     {{-- Menampilkan Flash Message (Success/Error) --}}
     @if (session('success'))
-        <div class="alert alert-success">{{ session('success') }}</div>
+        <div class="alert alert-success" style="margin-top: 20px;">{{ session('success') }}</div>
     @endif
     @if (session('error'))
-        <div class="alert alert-danger">{{ session('error') }}</div>
+        <div class="alert alert-danger" style="margin-top: 20px;">{{ session('error') }}</div>
     @endif
 
     {{-- Tombol Tambah --}}

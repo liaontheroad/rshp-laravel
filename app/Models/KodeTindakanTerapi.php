@@ -13,6 +13,7 @@ class KodeTindakanTerapi extends Model
     protected $primaryKey = 'idkode_tindakan_terapi';
     public $timestamps = false;
 
+    // Fillable fields sesuai struktur tabel
     protected $fillable = ['kode', 'deskripsi', 'idkategori', 'idkategori_klinis'];
 
     public function kategori()
@@ -24,8 +25,5 @@ class KodeTindakanTerapi extends Model
     {
         return $this->belongsTo(KategoriKlinis::class, 'idkategori_klinis', 'idkategori_klinis');
     }
-    public function getDeskripsiAttribute($value)
-    {
-        return $this->attributes['deskripsi_tindakan_terapi'];
-    }
+
 }
