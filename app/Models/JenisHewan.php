@@ -10,9 +10,6 @@ class JenisHewan extends Model
      protected $primaryKey = 'idjenis_hewan';
      protected $fillable = ['nama_jenis_hewan'];
      
-     public function rasHewan()
-     {
-          // Menentukan bahwa satu JenisHewan 'memiliki banyak' RasHewan
-          return $this->hasMany(RasHewan::class, 'idjenis_hewan', 'idjenis_hewan');
-     }
+     //mematikan created_at dan updated_at 
+     public $timestamps = false;
 }
