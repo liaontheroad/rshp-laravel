@@ -1,4 +1,4 @@
-<div class="sidebar bg-white shadow-lg w-64 min-h-screen flex flex-col">
+<div class="sidebar w-64 min-h-screen flex flex-col @if(session('user_role') == 1) bg-blue-100 @elseif(session('user_role') == 2) bg-green-100 @elseif(session('user_role') == 3) bg-yellow-100 @elseif(session('user_role') == 4) bg-purple-100 @elseif(session('user_role') == 5) bg-pink-100 @else bg-gray-100 @endif">
     <!-- Header -->
     <div class="p-6 border-b border-gray-200 flex items-center gap-2">
         <div class="w-8 h-8 bg-[#FFB800] rounded-lg flex items-center justify-center">

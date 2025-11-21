@@ -20,7 +20,6 @@
 
 <body>
     <div id="app">
-        @include('components.side-bar')
 {{--         
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
@@ -79,7 +78,6 @@
         <main class="py-4">
             @yield('content')
         </main>
-        @include('components.footer')
     </div>
 </body>
 </html>

@@ -8,7 +8,7 @@
     
     {{-- Kolom Sidebar --}}
     <aside style="flex: 0 0 280px; max-width: 280px;">
-        @include('layouts._sidebar')
+        @include('components.side-bar')
     </aside>
 
     {{-- Kolom Konten Utama (Konten Dashboard Awal) --}}

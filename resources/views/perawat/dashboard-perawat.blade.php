@@ -1,41 +1,43 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-12">
-            <div class="card">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <h4 class="mb-0">Selamat Datang, {{ session('user_name') }}!</h4>
-                    <a href="{{ route('logout') }}" class="btn btn-danger btn-sm"
-                       onclick="event.preventDefault();
-                                     document.getElementById('logout-form-dashboard').submit();">
-                        Logout
-                    </a>
-                </div>
-  
-                <div class="card-body">
-                    @if (session('success'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('success') }}
-                        </div>
-                    @endif
+{{-- Membungkus sidebar dan konten utama dalam satu div dengan layout Flexbox untuk tampilan dua kolom.
+     Kelas 'dashboard-container' digunakan kembali untuk properti max-width dan centering dari layouts/app.blade.php,
+     dan ditambahkan inline style untuk membuat tata letak fleksibel. --}}
+<div class="dashboard-container" style="display: flex; gap: 30px; align-items: flex-start;">
+    
+    {{-- Kolom Sidebar --}}
+    <aside style="flex: 0 0 280px; max-width: 280px;">
+        @include('components.side-bar')
+    </aside>
 
-                    <p>Anda login sebagai <strong>{{ session('user_role_name') }}</strong>. Silakan kelola pasien melalui menu di bawah ini.</p>
-
-                    <hr>
-
-                    <h5><i class="fas fa-database"></i> Menu </h5>
-                    <div class="row mt-3">
-            
-                    </div>
-                </div>
-
-                <form id="logout-form-dashboard" action="{{ route('logout') }}" method="POST" style="display: none;">
-                    @csrf
-                </form>
+    {{-- Kolom Konten Utama (Konten Dashboard Awal) --}}
+    <main style="flex: 1; min-width: 0;">
+        <div class="main-dashboard-content">
+            <div class="welcome-section">
+                <h1>Selamat Datang, {{ session('user_name', 'Admin') }}!</h1>
+                <p>Anda login sebagai <strong>{{ session('user_role_name', 'Administrator') }}</strong>. Silakan kelola data master melalui menu di bawah ini.</p>
+                <a href="{{ route('logout') }}" class="btn-dashboard btn-logout"
+                   onclick="event.preventDefault(); document.getElementById('logout-form-dashboard').submit();">
+                    Logout
+                </a>
             </div>
+
+            @if (session('success'))
+                <div class="alert alert-success" role="alert">
+                    {{ session('success') }}
+                </div>
+            @endif
+
+            <div class="dashboard-grid">
+                {{-- Kartu menu untuk Perawat bisa ditambahkan di sini --}}
+            </div>
+
+            <form id="logout-form-dashboard" action="{{ route('logout') }}" method="POST" style="display: none;">
+                @csrf
+            </form>
         </div>
+        @include('components.footer')
     </div>
 </div>
 @endsection

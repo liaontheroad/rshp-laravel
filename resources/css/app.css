@@ -12,11 +12,17 @@
 
 /* Dashboard Container */
 .dashboard-container {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 2rem;
+    display: flex;
     background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
     min-height: 100vh;
+}
+
+/* Main Content Area */
+.main-content {
+    flex-grow: 1;
+    padding: 2rem;
+    overflow-y: auto;
+    max-width: calc(100% - 250px); /* Adjust 250px to your sidebar's width */
 }
 
 /* Welcome Section */
