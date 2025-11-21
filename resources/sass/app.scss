@@ -4,5 +4,8 @@
 // Variables
 @import 'variables';
 
-// Bootstrap
-@import 'bootstrap/scss/bootstrap';
+// PENTING: Memuat library Bootstrap
+@import "~bootstrap/scss/bootstrap"; 
+
+// PENTING: Memuat style kustom Anda
+@import "../css/site.css";

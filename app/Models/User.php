@@ -68,4 +68,16 @@ class User extends Authenticatable
     {
         return $this->hasOne(Pemilik::class, 'iduser', 'iduser');
     }
+
+    // Relasi One-to-One: User has one Dokter
+    public function dokter()
+    {
+        return $this->hasOne(Dokter::class, 'id_user', 'id');
+    }
+
+    // Relasi One-to-One: User has one Perawat
+    public function perawat()
+    {
+        return $this->hasOne(Perawat::class, 'id_user', 'id');
+    }
 }

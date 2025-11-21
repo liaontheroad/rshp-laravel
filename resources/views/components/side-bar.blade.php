@@ -1,57 +1,45 @@
-<div class="card">
-    <div class="card-header">
-        Menu Navigasi
+<div class="sidebar bg-white shadow-lg w-64 min-h-screen flex flex-col">
+    <!-- Header -->
+    <div class="p-6 border-b border-gray-200 flex items-center gap-2">
+        <div class="w-8 h-8 bg-[#FFB800] rounded-lg flex items-center justify-center">
+            <i class="fas fa-paw text-white"></i>
+        </div>
+        <h2 class="font-bold text-gray-800">RSHP UNAIR</h2>
     </div>
-    <div class="card-body">
-        <ul class="nav flex-column">
 
-            {{-- Generic/All Roles Links --}}
-            <li class="nav-item">
-                <a class="nav-link" href="{{ route('home') }}">Home</a>
-            </li>
+    <!-- Navigation -->
+    <nav class="flex-1 p-4">
+        <ul class="space-y-2">
+            <li><a href="{{ route('home') }}" class="sidebar-link">Home</a></li>
 
             {{-- Admin (Role ID 1) --}}
             @if(session('user_role') == 1)
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('admin.dashboard') }}">Admin Dashboard</a>
-                </li>
-                {{-- Add other admin-specific links here --}}
-                {{-- <li class="nav-item"><a class="nav-link" href="{{ route('admin.users.index') }}">Manage Users</a></li> --}}
+                <li><a href="{{ route('admin.dashboard') }}" class="sidebar-link">Admin Dashboard</a></li>
             @endif
 
             {{-- Dokter (Role ID 2) --}}
             @if(session('user_role') == 2)
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('dokter.dashboard') }}">Dokter Dashboard</a>
-                </li>
-                {{-- <li class="nav-item"><a class="nav-link" href="#">Jadwal Saya</a></li> --}}
+                <li><a href="{{ route('dokter.dashboard') }}" class="sidebar-link">Dokter Dashboard</a></li>
+                {{-- <li><a href="#" class="sidebar-link">Jadwal Saya</a></li> --}}
             @endif
 
             {{-- Perawat (Role ID 3) --}}
             @if(session('user_role') == 3)
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('perawat.dashboard') }}">Perawat Dashboard</a>
-                </li>
-                {{-- <li class="nav-item"><a class="nav-link" href="#">Data Pasien</a></li> --}}
+                <li><a href="{{ route('perawat.dashboard') }}" class="sidebar-link">Perawat Dashboard</a></li>
+                {{-- <li><a href="#" class="sidebar-link">Data Pasien</a></li> --}}
             @endif
 
             {{-- Resepsionis (Role ID 4) --}}
             @if(session('user_role') == 4)
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('resepsionis.dashboard') }}">Resepsionis Dashboard</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('resepsionis.pendaftaran') }}">Pendaftaran</a>
-                </li>
+                <li><a href="{{ route('resepsionis.dashboard') }}" class="sidebar-link">Resepsionis Dashboard</a></li>
+                <li><a href="{{ route('resepsionis.pendaftaran') }}" class="sidebar-link">Pendaftaran</a></li>
             @endif
 
             {{-- Pemilik (Role ID 5) --}}
             @if(session('user_role') == 5)
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('pemilik.dashboard') }}">Pemilik Dashboard</a>
-                </li>
-                {{-- <li class="nav-item"><a class="nav-link" href="{{ route('pemilik.pets.index') }}">Peliharaan Saya</a></li> --}}
+                <li><a href="{{ route('pemilik.dashboard') }}" class="sidebar-link">Pemilik Dashboard</a></li>
+                {{-- <li><a href="{{ route('pemilik.pets.index') }}" class="sidebar-link">Peliharaan Saya</a></li> --}}
             @endif
         </ul>
-    </div>
+    </nav>
 </div>
