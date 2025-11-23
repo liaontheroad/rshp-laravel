@@ -1,5 +1,5 @@
 @extends('layouts.app')
-
+@section('title', 'Daftar Kode Tindakan Terapi')
 @section('content')
 <div class="page-container">
     <div class="page-header">
@@ -19,11 +19,12 @@
                 {{ session('error') }}
             </div>
         @endif
-
-        {{-- Button Tambah --}}
-        <a href="{{ route('admin.kode-tindakan-terapi.create') }}" class="add-btn">
-            <i class="fas fa-plus"></i> Tambah Kode Baru
-        </a>
+        
+        <div class="action-bar">
+            {{-- Tombol Kembali menggunakan JavaScript --}}
+            <button type="button" onclick="history.back()" class="back-btn">Kembali</button>
+            <a href="{{ route('admin.kode-tindakan-terapi.create') }}" class="add-btn">Tambah Kode Baru</a>
+        </div>
 
         <table class="data-table">
             <thead>

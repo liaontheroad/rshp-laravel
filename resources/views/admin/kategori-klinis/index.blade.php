@@ -1,5 +1,5 @@
 @extends('layouts.app')
-
+@section('title', 'Daftar Kategori Klinis')
 @section('content')
 <div class="page-container">
     <div class="page-header">
@@ -13,17 +13,13 @@
                 {{ session('success') }}
             </div>
         @endif
-        
-        @if (session('error'))
-            <div class="alert alert-danger" role="alert">
-                {{ session('error') }}
-            </div>
-        @endif
-
-        {{-- Button Tambah --}}
-        <a href="{{ route('admin.kategori-klinis.create') }}" class="add-btn">
-            <i class="fas fa-plus"></i> Tambah Kategori Klinis
-        </a>
+       
+        {{-- Baris Tombol Aksi --}}
+    <div class="action-bar">
+        {{-- Tombol Kembali menggunakan JavaScript --}}
+        <button type="button" onclick="history.back()" class="back-btn">Kembali</button>
+        <a href="{{ route('admin.kategori-klinis.create') }}" class="add-btn">Tambah Kategori Klinis</a>
+    </div>
 
         <table class="data-table">
             <thead>

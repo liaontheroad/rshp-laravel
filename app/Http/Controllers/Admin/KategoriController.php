@@ -3,16 +3,18 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Kategori;
 use Illuminate\Http\Request;
-use App\Models\Kategori; 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 
 class KategoriController extends Controller
 {
     public function index()
     {
-        $kategori = DB::tbale('kategori')->get();
-
+        // Perbaikan: 'tbale' menjadi 'table'
+        $kategori = DB::table('kategori')->get();
+        
         return view('admin.kategori.index', compact('kategori'));
     }
 
@@ -34,33 +36,43 @@ class KategoriController extends Controller
         // Menggunakan helper untuk memastikan format nama yang benar
         $validatedData['nama_kategori'] = $this->formatNamaKategori($validatedData['nama_kategori']);
 
-DB::table('kategori')
-          ->where('idkategori', $kategori->idkategori)
-          ->update([
-              'nama_kategori' => $formattedName,
-              // Update timestamp secara manual
-              'updated_at' => now(),
-          ]);
-          
+        // Perbaikan: $formattedName tidak terdefinisi, seharusnya menggunakan $validatedData['nama_kategori']
+        DB::table('kategori')
+            ->where('idkategori', $kategori->idkategori)
+            ->update([
+                'nama_kategori' => $validatedData['nama_kategori'],
+                'updated_at' => now(),
+            ]);
+
         return redirect()->route('admin.kategori-hewan.index')
                          ->with('success', 'Kategori hewan berhasil diperbarui.');
     }
 
-    public function destroy(Kategori $kategori)
+public function destroy($id)
     {
-        // NOTE: Pengecekan relasi dengan model 'Hewan' (yang diasumsikan)
-        // if ($kategori->hewan()->count() > 0) {
-        //     return redirect()->route('admin.kategori-hewan.index')
-        //                      ->with('error', 'Gagal menghapus kategori karena masih terkait dengan data hewan.');
-        // }
-
+        // Contoh di mana DB Facade mungkin digunakan untuk memeriksa relasi
+        // sebelum menghapus.
         try {
+            // Menggunakan DB facade untuk memeriksa relasi data
+            $isInUse = DB::table('nama_tabel_lain') // Ganti dengan nama tabel yang relevan
+                         ->where('idkategori', $id)
+                         ->exists();
+
+            if ($isInUse) {
+                return redirect()->route('admin.kategori-hewan.index')
+                                 ->with('error', 'Kategori tidak dapat dihapus karena masih digunakan oleh data lain.');
+            }
+
+            $kategori = Kategori::findOrFail($id);
             $kategori->delete();
+
             return redirect()->route('admin.kategori-hewan.index')
                              ->with('success', 'Kategori hewan berhasil dihapus.');
+
         } catch (\Exception $e) {
+            // Menangani error jika terjadi masalah saat query database
             return redirect()->route('admin.kategori-hewan.index')
-                             ->with('error', 'Gagal menghapus kategori. Pastikan tidak ada data yang terkait.');
+                             ->with('error', 'Terjadi kesalahan saat menghapus data: ' . $e->getMessage());
         }
     }
 
@@ -70,11 +82,12 @@ DB::table('kategori')
 
         // Menggunakan helper untuk memastikan format nama yang benar
         $validatedData['nama_kategori'] = $this->formatNamaKategori($validatedData['nama_kategori']);
-DB::table('kategori')->insert([
-    'nama_kategori' => $validatedData['nama_kategori'],
-  'created_at' => now(),
-  'updated_at' => now(),
-]);
+
+        DB::table('kategori')->insert([
+            'nama_kategori' => $validatedData['nama_kategori'],
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
 
         return redirect()->route('admin.kategori-hewan.index')
                          ->with('success', 'Kategori hewan berhasil ditambahkan.');

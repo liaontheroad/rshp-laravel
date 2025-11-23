@@ -1,0 +1,78 @@
+/*
+ * General Body Styles
+ * These styles are inherited from your existing setup but are good to have.
+ */
+body {
+    font-family: 'Nunito', sans-serif;
+    background-color: #f4f7f6;
+    color: #555;
+}
+
+/*
+ * Styles for Jenis Hewan Page
+ * This provides a clean, card-based layout for displaying animal types.
+ */
+.jenis-hewan-container {
+    padding: 2rem 1rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.jenis-hewan-header {
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.jenis-hewan-header h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #2c3e50;
+}
+
+.jenis-hewan-grid {
+    display: grid;
+    /* Creates a responsive grid that adjusts the number of columns */
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+}
+
+.jenis-hewan-card {
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.jenis-hewan-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+.jenis-hewan-card img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover; /* Ensures the image covers the area without distortion */
+}
+
+.jenis-hewan-card-body {
+    padding: 1.5rem;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.jenis-hewan-card-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #34495e;
+    margin-bottom: 0.5rem;
+}
+
+.jenis-hewan-card-description {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: #7f8c8d;
+}

@@ -54,7 +54,7 @@ Route::middleware(['isAdministrator'])->prefix('admin')->name('admin.')->group(f
         ]);
         
     // KATEGORI HEWAN
-    Route::get('/kategori-hewan', [App\Http\Controllers\Admin\KategoriController::class, 'index'])->name('kategori-hewan.index');
+    Route::get('/kategori-hewan.index', [App\Http\Controllers\Admin\KategoriController::class, 'index'])->name('kategori-hewan.index');
     Route::get('/kategori-hewan/create', [App\Http\Controllers\Admin\KategoriController::class, 'create'])->name('kategori-hewan.create');
     Route::post('/kategori-hewan', [App\Http\Controllers\Admin\KategoriController::class, 'store'])->name('kategori-hewan.store');
     Route::get('/kategori-hewan/{kategoriHewan}/edit', [App\Http\Controllers\Admin\KategoriController::class, 'edit'])->name('kategori-hewan.edit');
@@ -63,11 +63,11 @@ Route::middleware(['isAdministrator'])->prefix('admin')->name('admin.')->group(f
     Route::resource('kategori-hewan', App\Http\Controllers\Admin\KategoriController::class)
         ->except(['show'])
         ->parameters([
-            'kategori-hewan' => 'kategoriHewan'
+            'kategori-hewan' => 'kategori'
     ]);
 
     // KATEGORI KLINIS
-    Route::get('/kategori-klinis', [App\Http\Controllers\Admin\KategoriKlinisController::class, 'index'])->name('kategori_klinis.index');
+    Route::get('/kategori-klinis.index', [App\Http\Controllers\Admin\KategoriKlinisController::class, 'index'])->name('kategori_klinis.index');
     Route::get('/kategori-klinis/create', [App\Http\Controllers\Admin\KategoriKlinisController::class, 'create'])->name('kategori-klinis.create');
     Route::post('/kategori-klinis', [App\Http\Controllers\Admin\KategoriKlinisController::class, 'store'])->name('kategori-klinis.store');
     Route::get('/kategori-klinis/{kategoriKlinis}/edit', [App\Http\Controllers\Admin\KategoriKlinisController::class, 'edit'])->name('kategori-klinis.edit');

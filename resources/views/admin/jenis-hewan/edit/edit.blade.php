@@ -3,52 +3,41 @@
 @section('title', 'Edit Jenis Hewan')
 
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">Edit Jenis Hewan</div>
+<div class="page-container">
+    <div class="form-container">
+        <h1>Edit Jenis Hewan</h1>
 
-                <div class="card-body">
-                    {{-- Menampilkan pesan error dari Session --}}
-                    @if (session('error'))
-                        <div class="alert alert-danger" role="alert">
-                            {{ session('error') }}
-                        </div>
-                    @endif
+        <a href="{{ route('admin.jenis-hewan.index') }}" class="back-link">
+            <i class="fas fa-arrow-left"></i> Kembali ke Daftar Jenis Hewan
+        </a>
 
-                    {{-- Form untuk Submit Data --}}
-                    <form action="{{ route('admin.jenis-hewan.update', $jenisHewan->idjenis_hewan) }}" method="POST">
-                        @csrf
-                        @method('PUT')
-
-                        <div class="mb-3">
-                            <label for="nama_jenis_hewan" class="form-label">Nama Jenis Hewan <span class="text-danger">*</span></label>
-                            <input
-                                type="text"
-                                class="form-control @error('nama_jenis_hewan') is-invalid @enderror"
-                                id="nama_jenis_hewan"
-                                name="nama_jenis_hewan"
-                                value="{{ old('nama_jenis_hewan', $jenisHewan->nama_jenis_hewan) }}"
-                                placeholder="Masukkan nama jenis hewan"
-                                required
-                            >
-
-                            @error('nama_jenis_hewan')
-                                <div class="invalid-feedback">
-                                    {{ $message }}
-                                </div>
-                            @enderror
-                        </div>
-
-                        <div class="d-flex justify-content-between">
-                            <a href="{{ route('admin.jenis-hewan.index') }}" class="btn btn-secondary">Batal</a>
-                            <button type="submit" class="btn btn-primary">Update</button>
-                        </div>
-                    </form>
-                </div>
+        @if (session('error'))
+            <div class="alert alert-danger mt-3" role="alert">
+                {{ session('error') }}
             </div>
-        </div>
+        @endif
+
+        {{-- Form untuk Submit Data --}}
+        <form action="{{ route('admin.jenis-hewan.update', $jenisHewan->idjenis_hewan) }}" method="POST" class="mt-4">
+            @csrf
+            @method('PUT')
+
+            <div class="form-group">
+                <label for="nama_jenis">Nama Jenis Hewan <span class="text-danger">*</span></label>
+                <input type="text" class="form-control @error('nama_jenis') is-invalid @enderror"
+                    id="nama_jenis" name="nama_jenis"
+                    value="{{ old('nama_jenis', $jenisHewan->nama_jenis) }}"
+                    placeholder="Masukkan nama jenis hewan" required>
+
+                @error('nama_jenis')
+                    <div class="invalid-feedback d-block">{{ $message }}</div>
+                @enderror
+            </div>
+
+            <button type="submit" class="btn-submit">
+                <i class="fas fa-save"></i> Simpan Perubahan
+            </button>
+        </form>
     </div>
 </div>
 @endsection

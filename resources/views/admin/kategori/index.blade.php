@@ -20,10 +20,12 @@
             </div>
         @endif
 
-        {{-- Button Tambah --}}
-        <a href="{{ route('admin.kategori-hewan.create') }}" class="add-btn">
-            <i class="fas fa-plus"></i> Tambah Kategori
-        </a>
+    {{-- Baris Tombol Aksi --}}
+    <div class="action-bar">
+        {{-- Tombol Kembali menggunakan JavaScript --}}
+        <button type="button" onclick="history.back()" class="back-btn">Kembali</button>
+        <a href="{{ route('admin.kategori-hewan.create') }}" class="add-btn">Tambah Kategori Hewan</a>
+    </div>
 
         <table class="data-table">
             <thead>

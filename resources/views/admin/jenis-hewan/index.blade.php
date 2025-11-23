@@ -1,25 +1,5 @@
 @extends('layouts.app') 
 
-@push('styles')
-<style>
-    .action-buttons form {
-        display: inline-block;
-    }
-    .action-buttons .edit-btn,
-    .action-buttons .delete-btn {
-        padding: 6px 12px;
-        border-radius: 5px;
-        text-decoration: none;
-        color: white;
-        font-size: 14px;
-        font-weight: bold;
-        margin-right: 5px;
-        display: inline-block;
-        transition: all 0.3s ease;
-    }
-</style>
-@endpush
-
 @section('title', 'Daftar Jenis Hewan')
 
 @section('content')
@@ -29,18 +9,19 @@
         <p>Kelola data master untuk kategori utama hewan.</p>
     </div>
 
-    {{-- Menampilkan Flash Message (Success/Error) --}}
-    @if (session('success'))
-        <div class="alert alert-success" style="margin-top: 20px;">{{ session('success') }}</div>
-    @endif
-    @if (session('error'))
-        <div class="alert alert-danger" style="margin-top: 20px;">{{ session('error') }}</div>
+    <div class="main-content">
+        @if (session('success'))
+            <div class="alert alert-success" role="alert">
+                {{ session('success') }}
+            </div>
     @endif
 
-    {{-- Tombol Tambah --}}
-    <a href="{{ route('admin.jenis-hewan.create') }}" class="add-btn">
-        Tambah Jenis Hewan
-    </a>
+    {{-- Baris Tombol Aksi --}}
+    <div class="action-bar">
+        {{-- Tombol Kembali menggunakan JavaScript --}}
+        <button type="button" onclick="history.back()" class="back-btn">Kembali</button>
+        <a href="{{ route('admin.jenis-hewan.create') }}" class="add-btn">Tambah Jenis Hewan</a>
+    </div>
 
     {{-- Tabel Data --}}
     <table class="data-table">
