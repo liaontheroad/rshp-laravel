@@ -27,10 +27,13 @@
                 <div class="alert alert-success" role="alert">
                     {{ session('success') }}
                 </div>
-            @endifai
+            @endif
 
             <div class="dashboard-grid">
-                {{-- Kartu menu untuk Dokter bisa ditambahkan di sini --}}
+                <a href="{{ route('dokter.pets.index') }}" class="dashboard-card">
+                    <h3><i class="fas fa-paw"></i> Manajemen Data Pasien</h3>
+                    <p>Kelola data semua hewan peliharaan (pasien) yang terdaftar.</p>
+                </a>
             </div>
 
             <form id="logout-form-dashboard" action="{{ route('logout') }}" method="POST" style="display: none;">

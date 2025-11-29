@@ -1,13 +1,13 @@
 @extends('layouts.app')
 
-@section('title', 'Tambah Kategori Hewan')
+@section('title', 'Tambah Kategori ')
 
 @section('content')
     <div class="page-container">
         <div class="form-container">
-            <h1>Tambah Kategori Hewan</h1>
+            <h1>Tambah Kategori </h1>
 
-            <a href="{{ route('admin.kategori-hewan.index') }}" class="back-link">
+            <a href="{{ route('admin.kategori.index') }}" class="back-link">
                 <i class="fas fa-arrow-left"></i> Kembali ke Daftar Kategori
             </a>
 
@@ -22,13 +22,13 @@
                 </div>
             @endif
 
-            <form action="{{ route('admin.kategori-hewan.store') }}" method="POST" class="mt-4">
+            <form action="{{ route('admin.kategori.store') }}" method="POST" class="mt-4">
                 @csrf
 
                 <div class="form-group">
                     <label for="nama_kategori">Nama Kategori Hewan <span class="text-danger">*</span></label>
                     <input type="text" class="form-control" id="nama_kategori" name="nama_kategori"
-                        value="{{ old('nama_kategori') }}" placeholder="Masukkan nama kategori hewan" required>
+                        value="{{ old('nama_kategori') }}" placeholder="Masukkan nama kategori " required>
                     @error('nama_kategori') <div class="invalid-feedback d-block">{{ $message }}</div> @enderror
                 </div>
 

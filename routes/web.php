@@ -54,16 +54,16 @@ Route::middleware(['isAdministrator'])->prefix('admin')->name('admin.')->group(f
         ]);
         
     // KATEGORI HEWAN
-    Route::get('/kategori-hewan.index', [App\Http\Controllers\Admin\KategoriController::class, 'index'])->name('kategori-hewan.index');
-    Route::get('/kategori-hewan/create', [App\Http\Controllers\Admin\KategoriController::class, 'create'])->name('kategori-hewan.create');
-    Route::post('/kategori-hewan', [App\Http\Controllers\Admin\KategoriController::class, 'store'])->name('kategori-hewan.store');
-    Route::get('/kategori-hewan/{kategoriHewan}/edit', [App\Http\Controllers\Admin\KategoriController::class, 'edit'])->name('kategori-hewan.edit');
-    Route::put('/kategori-hewan/{kategoriHewan}', [App\Http\Controllers\Admin\KategoriController::class, 'update'])->name('kategori-hewan.update');
-    Route::delete('/kategori-hewan/{kategoriHewan}', [App\Http\Controllers\Admin\KategoriController::class, 'destroy'])->name('kategori-hewan.destroy');
-    Route::resource('kategori-hewan', App\Http\Controllers\Admin\KategoriController::class)
+    Route::get('/kategori.index', [App\Http\Controllers\Admin\KategoriController::class, 'index'])->name('kategori.index');
+    Route::get('/kategori/create', [App\Http\Controllers\Admin\KategoriController::class, 'create'])->name('kategori.create');
+    Route::post('/kategori', [App\Http\Controllers\Admin\KategoriController::class, 'store'])->name('kategori.store');
+    Route::get('/kategori/{kategori}/edit', [App\Http\Controllers\Admin\KategoriController::class, 'edit'])->name('kategori.edit');
+    Route::put('/kategori/{kategori\}', [App\Http\Controllers\Admin\KategoriController::class, 'update'])->name('kategori.update');
+    Route::delete('/kategori/{kategori}', [App\Http\Controllers\Admin\KategoriController::class, 'destroy'])->name('kategori.destroy');
+    Route::resource('kategori', App\Http\Controllers\Admin\KategoriController::class)
         ->except(['show'])
         ->parameters([
-            'kategori-hewan' => 'kategori'
+            'kategori' => 'kategori'
     ]);
 
     // KATEGORI KLINIS
@@ -133,12 +133,25 @@ Route::middleware(['isAdministrator'])->prefix('admin')->name('admin.')->group(f
     ->parameters([
         'pets' => 'pet' // Model binding name
     ]);
-});
+});      
 
 //akses Dokter
 Route::middleware(['isDokter'])->group(function () {
     Route::get('/dokter/dashboard', [DashboardDokterController::class, 'index'])->name('dokter.dashboard');
+
+//patient management
+    Route::get('/pets', [PetController::class, 'index'])->name('dokter.pets.index');
+    Route::get('/pets/create',[App\Http\Controllers\Dokter\PetController::class,'create'])->name('pets.create');
+    Route::post('/pets', [\Http\Controllers\Dokter\PetController::class,'store'])->name('pets.store');
+    Route::get('/pets/{pet}/edit', [App\Http\Controllers\Dokter\PetController::class, 'edit'])->name('pets.edit');
+    Route::put('/pets/{pet}', [App\Http\Controllers\Dokter\PetController::class, 'update'])->name('pets.update');
+    Route::resource('roles', App\Http\Controllers\Dokter\PetController::class)
+    ->except(['show'])
+    ->parameters([
+        'pets' => 'pet'
+    ]);
 });
+
 
 //akses Perawat
 Route::middleware(['isPerawat'])->group(function () {

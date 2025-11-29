@@ -44,8 +44,8 @@ class KategoriController extends Controller
                 'updated_at' => now(),
             ]);
 
-        return redirect()->route('admin.kategori-hewan.index')
-                         ->with('success', 'Kategori hewan berhasil diperbarui.');
+        return redirect()->route('admin.kategori.index')
+                         ->with('success', 'Kategori penanganan berhasil diperbarui.');
     }
 
 public function destroy($id)
@@ -59,19 +59,19 @@ public function destroy($id)
                          ->exists();
 
             if ($isInUse) {
-                return redirect()->route('admin.kategori-hewan.index')
-                                 ->with('error', 'Kategori tidak dapat dihapus karena masih digunakan oleh data lain.');
+                return redirect()->route('admin.kategori.index')
+                                 ->with('error', 'Kategori penanganantidak dapat dihapus karena masih digunakan oleh data lain.');
             }
 
             $kategori = Kategori::findOrFail($id);
             $kategori->delete();
 
-            return redirect()->route('admin.kategori-hewan.index')
-                             ->with('success', 'Kategori hewan berhasil dihapus.');
+            return redirect()->route('admin.kategori.index')
+                             ->with('success', 'Kategori penanganan berhasil dihapus.');
 
         } catch (\Exception $e) {
             // Menangani error jika terjadi masalah saat query database
-            return redirect()->route('admin.kategori-hewan.index')
+            return redirect()->route('admin.kategori.index')
                              ->with('error', 'Terjadi kesalahan saat menghapus data: ' . $e->getMessage());
         }
     }
@@ -89,8 +89,8 @@ public function destroy($id)
             'updated_at' => now(),
         ]);
 
-        return redirect()->route('admin.kategori-hewan.index')
-                         ->with('success', 'Kategori hewan berhasil ditambahkan.');
+        return redirect()->route('admin.kategori.index')
+                         ->with('success', 'Kategori penanganan berhasil ditambahkan.');
     }
 
     private function validateKategori(Request $request, $id = null)
