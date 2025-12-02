@@ -52,6 +52,12 @@ class User extends Authenticatable
         return $this->belongsTo(Role::class, 'idrole', 'idrole');
     }
 
+    public function hasRole($roleName)
+{
+    // Adjust 'name' based on the actual column storing the role name
+    return $this->role && $this->role->name === $roleName;
+}
+
     /**
      * The roles that belong to the user. (Relasi Many-to-Many Anda yang lama)
      */

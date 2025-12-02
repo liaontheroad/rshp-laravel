@@ -12,11 +12,11 @@
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="{{ asset('adminlte/assets/plugins/fontawesome-free/css/all.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('adminlte/plugins/fontawesome-free/css/all.min.css') }}">
     <!-- overlayScrollbars -->
-    <link rel="stylesheet" href="{{ asset('adminlte/assets/plugins/overlayScrollbars/css/OverlayScrollbars.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('adminlte/plugins/overlayScrollbars/css/OverlayScrollbars.min.css') }}">
     <!-- AdminLTE Theme style -->
-    <link rel="stylesheet" href="{{ asset('adminlte/css/adminlte.min.css') }}">
+   <link rel="stylesheet" href="{{ asset('adminlte/dist/css/adminlte.min.css') }}">
 
     @stack('styles')
 </head>
@@ -43,13 +43,13 @@
                     <!-- User Menu Dropdown -->
                     <li class="nav-item dropdown user-menu">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                            <img src="{{ asset('adminlte/assets/img/user2-160x160.jpg') }}" class="user-image img-circle shadow" alt="User Image">
+                            <img src="{{ asset('adminlte/dist/img/user2-160x160.jpg') }}" class="user-image img-circle shadow" alt="User Image">
                             <span class="d-none d-md-inline">Admin</span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-end">
                             <!-- User image -->
                             <li class="user-header bg-primary">
-                                <img src="{{ asset('adminlte/assets/img/user2-160x160.jpg') }}" class="img-circle shadow" alt="User Image">
+                                <img src="{{ asset('adminlte/dist/img/user2-160x160.jpg') }}" class="img-circle shadow" alt="User Image">
                                 <p>
                                     Admin
                                     <small>Member since Nov. 2023</small>
@@ -68,42 +68,136 @@
         <!-- /.navbar -->
 
         <!-- Main Sidebar Container -->
-        <aside class="app-sidebar bg-body-secondary shadow" data-bs-theme="dark">
-            <div class="sidebar-brand">
-                <a href="#" class="brand-link">
-                    <img src="{{ asset('adminlte/assets/img/AdminLTELogo.png') }}" alt="AdminLTE Logo" class="brand-image opacity-75 shadow">
-                    <span class="brand-text fw-light">AdminLTE 4</span>
-                </a>
-            </div>
+<aside class="app-sidebar bg-body-secondary shadow" data-bs-theme="dark">
+    <div class="sidebar-brand">
+        <a href="#" class="brand-link">
+            <img src="{{ asset('adminlte/dist/img/AdminLTELogo.png') }}" alt="AdminLTE Logo" class="brand-image opacity-75 shadow">
+            <span class="brand-text fw-light">RSHP UNAIR</span>
+        </a>
+    </div>
 
             <!-- Sidebar -->
-            <div class="sidebar-wrapper">
-                <nav class="mt-2">
-                    <!-- Sidebar Menu -->
-                    <ul class="nav sidebar-menu flex-column" data-lte-toggle="treeview" role="menu" data-accordion="false">
-                        <li class="nav-item">
-                            <a href="#" class="nav-link active">
-                                <i class="nav-icon fa-solid fa-gauge"></i>
-                                <p>
-                                    Dashboard
-                                </a>
-                            </li>
+<div class="sidebar-wrapper">
+    <nav class="mt-2">
+        <ul class="nav sidebar-menu flex-column" data-lte-toggle="treeview" role="menu" data-accordion="false">
+            
+            {{-- Conditional Menu Rendering (assuming role name is stored in Auth::user()->role_name) --}}
+            
+            @auth
+                
+                {{-- 1. ADMIN MENU (Most extensive menu, copied from layouts/dashboard.blade.php) --}}
+                @if (Auth::user()->role_name === 'Admin')
+                    <li class="nav-item">
+                        <a href="{{ route('admin.dashboard') }}" class="nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
+                            <i class="nav-icon fa-solid fa-gauge"></i>
+                            <p>Dashboard Admin</p>
+                        </a>
+                    </li>
+                    <li class="nav-header">MANAJEMEN MASTER</li>
+                    <li class="nav-item">
+                        <a href="{{ route('admin.users.index') }}" class="nav-link {{ request()->routeIs('admin.users.*') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-users"></i><p>Manajemen User</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('admin.roles.index') }}" class="nav-link {{ request()->routeIs('admin.roles.*') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-user-tag"></i><p>Manajemen Role</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('admin.pemilik.index') }}" class="nav-link {{ request()->routeIs('admin.pemilik.*') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-user"></i><p>Manajemen Pemilik</p>
+                        </a>
+                    </li>
+                    <li class="nav-header">DATA HEWAN</li>
+                    <li class="nav-item">
+                        <a href="{{ route('admin.jenis-hewan.index') }}" class="nav-link {{ request()->routeIs('admin.jenis-hewan.*') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-paw"></i><p>Jenis Hewan</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('admin.ras-hewan.index') }}" class="nav-link {{ request()->routeIs('admin.ras-hewan.*') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-dog"></i><p>Ras Hewan</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        {{-- Assuming 'kategori' in admin.blade.php corresponds to 'kategori-hewan' from dashboard.blade.php --}}
+                        <a href="{{ route('admin.kategori-hewan.index') }}" class="nav-link {{ request()->routeIs('admin.kategori-hewan.*') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-tags"></i><p>Kategori Hewan</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('admin.kategori-klinis.index') }}" class="nav-link {{ request()->routeIs('admin.kategori-klinis.*') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-heartbeat"></i><p>Kategori Klinis</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('admin.pets.index') }}" class="nav-link {{ request()->routeIs('admin.pets.*') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-cat"></i><p>Manajemen Pasien</p>
+                        </a>
+                    </li>
 
-                            <li class="nav-header">MANAJEMEN DATA</li>
-                            <li class="nav-item">
-                                <a href="{{ route('admin.kategori.index') }}" class="nav-link {{ request()->routeIs('admin.kategori.*') ? 'active' : '' }}">
-                                    <i class="nav-icon fas fa-tags"></i>
-                                    <p>
-                                        Kategori
-                                    </p>
-                                </a>
-                            </li>
-                        {{-- Add other menu items here --}}
-                    </ul>
-                </nav>
-            </div>
-            <!-- /.sidebar -->
-        </aside>
+                {{-- 2. DOKTER MENU (Inferred routes from filenames) --}}
+                @elseif (Auth::user()->role_name === 'Dokter')
+                    <li class="nav-item">
+                        <a href="{{ route('dokter.dashboard') }}" class="nav-link {{ request()->routeIs('dokter.dashboard') ? 'active' : '' }}">
+                            <i class="nav-icon fa-solid fa-gauge"></i>
+                            <p>Dashboard Dokter</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('dokter.pets.index') }}" class="nav-link {{ request()->routeIs('dokter.pets.*') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-notes-medical"></i>
+                            <p>Pasien Hari Ini</p>
+                        </a>
+                    </li>
+                
+                {{-- 3. PEMILIK MENU (Inferred routes from filenames) --}}
+                @elseif (Auth::user()->role_name === 'Pemilik')
+                    <li class="nav-item">
+                        <a href="{{ route('pemilik.dashboard') }}" class="nav-link {{ request()->routeIs('pemilik.dashboard') ? 'active' : '' }}">
+                            <i class="nav-icon fa-solid fa-gauge"></i>
+                            <p>Dashboard Pemilik</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('pemilik.peliharaan') }}" class="nav-link {{ request()->routeIs('pemilik.peliharaan') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-address-book"></i>
+                            <p>Daftar Peliharaan</p>
+                        </a>
+                    </li>
+                
+                {{-- 4. RESEPSIONIS MENU (Inferred routes from filenames) --}}
+                @elseif (Auth::user()->role_name === 'Resepsionis')
+                    <li class="nav-item">
+                        <a href="{{ route('resepsionis.dashboard') }}" class="nav-link {{ request()->routeIs('resepsionis.dashboard') ? 'active' : '' }}">
+                            <i class="nav-icon fa-solid fa-gauge"></i>
+                            <p>Dashboard Resepsionis</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('resepsionis.pendaftaran') }}" class="nav-link {{ request()->routeIs('resepsionis.pendaftaran') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-clipboard-list"></i>
+                            <p>Manajemen Pendaftaran</p>
+                        </a>
+                    </li>
+
+                {{-- 5. PERAWAT MENU (Inferred routes from filenames) --}}
+                @elseif (Auth::user()->role_name === 'Perawat')
+                    <li class="nav-item">
+                        <a href="{{ route('perawat.dashboard') }}" class="nav-link {{ request()->routeIs('perawat.dashboard') ? 'active' : '' }}">
+                            <i class="nav-icon fa-solid fa-gauge"></i>
+                            <p>Dashboard Perawat</p>
+                        </a>
+                    </li>
+                    {{-- Add specific Perawat links here later --}}
+
+                @endif {{-- End of role check --}}
+            @endauth
+        </ul>
+    </nav>
+</div>
+    </aside>
 
         <!-- Main content -->
         <main class="app-main">
@@ -147,13 +241,20 @@
     <!-- REQUIRED SCRIPTS -->
 
     <!-- overlayScrollbars -->
-    <script src="{{ asset('adminlte/assets/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js') }}"></script>
+    <script src="{{ asset('adminlte/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js') }}"></script>
 
     <!-- Bootstrap 5 -->
-    <script src="{{ asset('adminlte/assets/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+GET http://localhost:8000/adminlte/plugins/fontawesome-free/css/all.min.css net::ERR_ABORTED 404 (Not Found)
+dashboard:17   GET http://localhost:8000/adminlte/plugins/overlayScrollbars/css/OverlayScrollbars.min.css net::ERR_ABORTED 404 (Not Found)
+dashboard:19   GET http://localhost:8000/adminlte/css/adminlte.min.css net::ERR_ABORTED 404 (Not Found)
+dashboard:45   GET http://localhost:8000/adminlte/img/user2-160x160.jpg 404 (Not Found)
+dashboard:73   GET http://localhost:8000/adminlte/img/AdminLTELogo.png 404 (Not Found)
+dashboard:145   GET http://localhost:8000/adminlte/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js net::ERR_ABORTED 404 (Not Found)
+dashboard:148   GET http://localhost:8000/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js net::ERR_ABORTED 404 (Not Found)
+dashboard:151   GET http://localhost:8000/adminlte/js/adminlte.min.js net::ERR_ABORTED 404 (Not Found)    <script src="{{ asset('adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 
     <!-- AdminLTE App -->
-    <script src="{{ asset('adminlte/js/adminlte.min.js') }}"></script>
+    <script src="{{ asset('adminlte/dist/js/adminlte.min.js') }}"></script>
 
     @stack('scripts')
 </body>
