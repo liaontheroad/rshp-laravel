@@ -1,92 +1,126 @@
 @extends('layouts.app')
 
+{{-- Judul Halaman yang Muncul di Tab Browser --}}
 @section('title', 'Tambah Kode Tindakan/Terapi')
 
+{{-- Judul Konten yang Muncul di Breadcrumb Bar --}}
+@section('content-header', 'Tambah Kode Tindakan/Terapi Baru')
+
 @section('content')
-<div class="page-container">
-    <div class="form-container">
-        <h1>Tambah Kode Tindakan/Terapi</h1>
-        
-        <a href="{{ route('admin.kode-tindakan-terapi.index') }}" class="back-link">
-            <i class="fas fa-arrow-left"></i> Kembali ke Daftar Kode
-        </a>
-
-        @if (session('error'))
-            <div class="alert alert-danger" role="alert">
-                {{ session('error') }}
-            </div>
-        @endif
-
-        <form action="{{ route('admin.kode-tindakan-terapi.store') }}" method="POST">
-            @csrf
-
-            {{-- Form Group: Kode --}}
-            <div class="form-group">
-                <label for="kode">Kode Tindakan/Terapi <span class="text-danger">*</span></label>
-                <input
-                    type="text"
-                    id="kode"
-                    name="kode"
-                    value="{{ old('kode') }}"
-                    placeholder="Contoh: RX001"
-                    required
-                >
-                @error('kode')
-                    <div class="alert alert-danger">{{ $message }}</div>
-                @enderror
+<div class="row justify-content-center"> {{-- Pusatkan Card --}}
+    <div class="col-lg-8 col-md-10 col-sm-12">
+        <div class="card card-success card-outline"> {{-- Menggunakan card-success untuk operasi Tambah (hijau) --}}
+            <div class="card-header">
+                <h3 class="card-title">Isi Detail Kode Tindakan/Terapi</h3>
+                <div class="card-tools">
+                    <a href="{{ route('admin.kode-tindakan-terapi.index') }}" class="btn btn-sm btn-default" title="Kembali">
+                        <i class="fas fa-arrow-left"></i> Kembali
+                    </a>
+                </div>
             </div>
 
-            {{-- Form Group: Kategori Hewan --}}
-            <div class="form-group">
-                <label for="idkategori">Kategori Hewan <span class="text-danger">*</span></label>
-                <select id="idkategori" name="idkategori" required>
-                    <option value="">Pilih Kategori Hewan</option>
-                    @foreach ($kategori as $item)
-                        <option value="{{ $item->idkategori }}" {{ old('idkategori') == $item->idkategori ? 'selected' : '' }}>
-                            {{ $item->nama_kategori }}
-                        </option>
-                    @endforeach
-                </select>
-                @error('idkategori')
-                    <div class="alert alert-danger">{{ $message }}</div>
-                @enderror
-            </div>
+            <div class="card-body">
+                
+                {{-- Global Flash Message (Error dari session('error')) --}}
+                @if (session('error'))
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        {{ session('error') }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                @endif
 
-            {{-- Form Group: Kategori Klinis --}}
-            <div class="form-group">
-                <label for="idkategori_klinis">Kategori Klinis <span class="text-danger">*</span></label>
-                <select id="idkategori_klinis" name="idkategori_klinis" required>
-                    <option value="">Pilih Kategori Klinis</option>
-                    @foreach ($kategoriKlinis as $item)
-                        <option value="{{ $item->idkategori_klinis }}" {{ old('idkategori_klinis') == $item->idkategori_klinis ? 'selected' : '' }}>
-                            {{ $item->nama_kategori_klinis }}
-                        </option>
-                    @endforeach
-                </select>
-                @error('idkategori_klinis')
-                    <div class="alert alert-danger">{{ $message }}</div>
-                @enderror
-            </div>
+                {{-- Global Validation Errors --}}
+                @if ($errors->any())
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <strong>Whoops!</strong> Ada beberapa masalah dengan input Anda.
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        <ul class="mt-2 mb-0">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
 
-            {{-- Form Group: Deskripsi --}}
-            <div class="form-group">
-                <label for="deskripsi">Deskripsi Tindakan <span class="text-danger">*</span></label>
-                <textarea
-                    id="deskripsi"
-                    name="deskripsi"
-                    rows="3"
-                    placeholder="Jelaskan secara singkat tindakan/terapi ini"
-                    required
-                >{{ old('deskripsi') }}</textarea>
-                @error('deskripsi')
-                    <div class="alert alert-danger">{{ $message }}</div>
-                @enderror
-            </div>
+                {{-- Form untuk Submit Data --}}
+                <form action="{{ route('admin.kode-tindakan-terapi.store') }}" method="POST">
+                    @csrf
+                    
+                    {{-- Form Group: Kode --}}
+                    <div class="mb-3">
+                        <label for="kode" class="form-label">Kode Tindakan/Terapi <span class="text-danger">*</span></label>
+                        <input
+                            type="text"
+                            class="form-control @error('kode') is-invalid @enderror"
+                            id="kode"
+                            name="kode"
+                            value="{{ old('kode') }}"
+                            placeholder="Contoh: RX001"
+                            required
+                        >
+                        @error('kode')
+                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                        @enderror
+                    </div>
 
-            <button type="submit" class="btn-submit">
-                <i class="fas fa-save"></i> Simpan Kode
-            </button>
-        </form>
+                    {{-- Form Group: Kategori Hewan --}}
+                    <div class="mb-3">
+                        <label for="idkategori" class="form-label">Kategori Hewan <span class="text-danger">*</span></label>
+                        <select id="idkategori" name="idkategori" class="form-select @error('idkategori') is-invalid @enderror" required>
+                            <option value="">-- Pilih Kategori Hewan --</option>
+                            @foreach ($kategori as $item)
+                                <option value="{{ $item->idkategori }}" {{ old('idkategori') == $item->idkategori ? 'selected' : '' }}>
+                                    {{ $item->nama_kategori }}
+                                </option>
+                            @endforeach
+                        </select>
+                        @error('idkategori')
+                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    {{-- Form Group: Kategori Klinis --}}
+                    <div class="mb-3">
+                        <label for="idkategori_klinis" class="form-label">Kategori Klinis <span class="text-danger">*</span></label>
+                        <select id="idkategori_klinis" name="idkategori_klinis" class="form-select @error('idkategori_klinis') is-invalid @enderror" required>
+                            <option value="">-- Pilih Kategori Klinis --</option>
+                            @foreach ($kategoriKlinis as $item)
+                                <option value="{{ $item->idkategori_klinis }}" {{ old('idkategori_klinis') == $item->idkategori_klinis ? 'selected' : '' }}>
+                                    {{ $item->nama_kategori_klinis }}
+                                </option>
+                            @endforeach
+                        </select>
+                        @error('idkategori_klinis')
+                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    {{-- Form Group: Deskripsi (Textarea) --}}
+                    <div class="mb-3">
+                        <label for="deskripsi" class="form-label">Deskripsi Tindakan <span class="text-danger">*</span></label>
+                        <textarea
+                            id="deskripsi"
+                            name="deskripsi"
+                            class="form-control @error('deskripsi') is-invalid @enderror"
+                            rows="3"
+                            placeholder="Jelaskan secara singkat tindakan/terapi ini"
+                            required
+                        >{{ old('deskripsi') }}</textarea>
+                        @error('deskripsi')
+                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary mt-3"> 
+                            <i class="fas fa-save"></i> Simpan Kode
+                        </button>
+                    </div>
+                </form>
+            </div>
+            <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
     </div>
 </div>
 @endsection

@@ -1,62 +1,94 @@
 @extends('layouts.app')
+
+{{-- Judul Halaman yang Muncul di Tab Browser --}}
 @section('title', 'Daftar Kategori Klinis')
+
+{{-- Judul Konten yang Muncul di Breadcrumb Bar --}}
+@section('content-header', 'Manajemen Kategori Klinis')
+
 @section('content')
-<div class="page-container">
-    <div class="page-header">
-        <h1>Manajemen Kategori Klinis</h1>
-        <p>Kelola kategori yang digunakan untuk keperluan klinis dan rekam medis.</p>
-    </div>
-
-    <div class="main-content">
-        @if (session('success'))
-            <div class="alert alert-success" role="alert">
-                {{ session('success') }}
+<div class="row">
+    <div class="col-12">
+        <div class="card card-primary card-outline"> {{-- Menggunakan card-primary untuk warna utama --}}
+            <div class="card-header">
+                <h3 class="card-title">Daftar Kategori Klinis</h3>
+                <div class="card-tools">
+                    {{-- Tombol Tambah di kanan atas Card --}}
+                    <a href="{{ route('admin.kategori-klinis.create') }}" class="btn btn-primary btn-sm">
+                        <i class="fas fa-plus-circle"></i> Tambah Kategori Klinis
+                    </a>
+                </div>
             </div>
-        @endif
-       
-        {{-- Baris Tombol Aksi --}}
-    <div class="action-bar">
-        {{-- Tombol Kembali menggunakan JavaScript --}}
-        <button type="button" onclick="history.back()" class="back-btn">Kembali</button>
-        <a href="{{ route('admin.kategori-klinis.create') }}" class="add-btn">Tambah Kategori Klinis</a>
-    </div>
 
-        <table class="data-table">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Nama Kategori Klinis</th>
-                    <th>Aksi</th>
-                </tr>
-            </thead>
-            <tbody>
-                @forelse ($kategoriKlinis as $item)
-                <tr>
-                    <td>{{ $item->idkategori_klinis }}</td>
-                    <td>{{ $item->nama_kategori_klinis }}</td>
-                    <td class="action-buttons">
-                        {{-- Button Edit --}}
-                        <a href="{{ route('admin.kategori-klinis.edit', $item->idkategori_klinis) }}" class="edit-btn">
-                            <i class="fas fa-edit"></i> Edit
-                        </a>
+            <div class="card-body">
+                
+                {{-- Flash Message (Success) --}}
+                @if (session('success'))
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        {{ session('success') }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                @endif
+                
+                {{-- Flash Message (Error) --}}
+                @if (session('error'))
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        {{ session('error') }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                @endif
 
-                        {{-- Form Delete --}}
-                        <form action="{{ route('admin.kategori-klinis.destroy', $item->idkategori_klinis) }}" method="POST" style="display:inline-block;">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="delete-btn" onclick="return confirm('Apakah Anda yakin ingin menghapus kategori klinis {{ $item->nama_kategori_klinis }}? Tindakan ini tidak dapat dibatalkan jika masih ada relasi data.')">
-                                <i class="fas fa-trash"></i> Hapus
-                            </button>
-                        </form>
-                    </td>
-                </tr>
-                @empty
-                <tr>
-                    <td colspan="3" style="text-align: center;">Tidak ada data kategori klinis.</td>
-                </tr>
-                @endforelse
-            </tbody>
-        </table>
+                {{-- Tabel Data --}}
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover table-striped">
+                        <thead class="table-light">
+                            <tr>
+                                <th style="width: 5%">ID</th>
+                                <th>Nama Kategori Klinis</th>
+                                <th style="width: 20%; text-align: center;">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse ($kategoriKlinis as $item)
+                            <tr>
+                                <td>{{ $item->idkategori_klinis }}</td>
+                                <td>{{ $item->nama_kategori_klinis }}</td>
+                                
+                                <td class="text-center d-flex justify-content-center gap-2">
+                                    {{-- Link Edit --}}
+                                    <a href="{{ route('admin.kategori-klinis.edit', $item->idkategori_klinis) }}" class="btn btn-sm btn-info" title="Edit">
+                                        <i class="fas fa-edit"></i> Edit
+                                    </a>
+
+                                    {{-- Form Delete --}}
+                                    <form action="{{ route('admin.kategori-klinis.destroy', $item->idkategori_klinis) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus kategori klinis {{ $item->nama_kategori_klinis }}? Tindakan ini tidak dapat dibatalkan jika masih ada relasi data.');" style="display:inline;">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-sm btn-danger" title="Hapus">
+                                            <i class="fas fa-trash"></i> Hapus
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                            @empty
+                            <tr>
+                                <td colspan="3" class="text-center text-muted">Tidak ada data kategori klinis.</td>
+                            </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+
+                {{-- Tombol Kembali --}}
+                <div class="mt-3">
+                    <button type="button" onclick="history.back()" class="btn btn-secondary btn-sm">
+                        <i class="fas fa-arrow-left"></i> Kembali
+                    </button>
+                </div>
+            </div>
+            <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
     </div>
 </div>
 @endsection

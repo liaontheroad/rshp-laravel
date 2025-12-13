@@ -3,18 +3,20 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Kategori;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use App\Models\Kategori;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class KategoriController extends Controller
 {
     public function index()
     {
-        // Perbaikan: 'tbale' menjadi 'table'
-        $kategori = DB::table('kategori')->get();
-        
+        // FIX: Menggunakan Eloquent Model (Kategori::all()) untuk mengambil data.
+        // Lebih disukai daripada DB::table().
+        $kategori = Kategori::all();
+
         return view('admin.kategori.index', compact('kategori'));
     }
 
@@ -36,43 +38,40 @@ class KategoriController extends Controller
         // Menggunakan helper untuk memastikan format nama yang benar
         $validatedData['nama_kategori'] = $this->formatNamaKategori($validatedData['nama_kategori']);
 
-        // Perbaikan: $formattedName tidak terdefinisi, seharusnya menggunakan $validatedData['nama_kategori']
-        DB::table('kategori')
-            ->where('idkategori', $kategori->idkategori)
-            ->update([
-                'nama_kategori' => $validatedData['nama_kategori'],
-                'updated_at' => now(),
-            ]);
+        // FIX: Menggunakan Eloquent untuk update
+        $kategori->nama_kategori = $validatedData['nama_kategori'];
+        // Jika model Kategori memiliki timestamps, updated_at akan otomatis terisi.
+        // Karena di model KodeTindakanTerapi timestamps = false,
+        // kita asumsikan di model Kategori juga false atau Anda ingin update manual.
+
+        // Jika Anda TIDAK menggunakan timestamps di model Kategori, uncomment baris ini:
+        // $kategori->updated_at = now();
+
+        $kategori->save();
 
         return redirect()->route('admin.kategori.index')
-                         ->with('success', 'Kategori penanganan berhasil diperbarui.');
+                         ->with('success', 'Kategori hewan berhasil diperbarui.');
     }
 
-public function destroy($id)
+    public function destroy(Kategori $kategori)
     {
-        // Contoh di mana DB Facade mungkin digunakan untuk memeriksa relasi
-        // sebelum menghapus.
+        // NOTE: Pengecekan relasi dengan model 'Hewan' (yang diasumsikan)
+        // if ($kategori->hewan()->count() > 0) {
+        //     return redirect()->route('admin.kategori.index')
+        //                      ->with('error', 'Gagal menghapus kategori karena masih terkait dengan data hewan.');
+        // }
+
         try {
-            // Menggunakan DB facade untuk memeriksa relasi data
-            $isInUse = DB::table('nama_tabel_lain') // Ganti dengan nama tabel yang relevan
-                         ->where('idkategori', $id)
-                         ->exists();
-
-            if ($isInUse) {
-                return redirect()->route('admin.kategori.index')
-                                 ->with('error', 'Kategori penanganantidak dapat dihapus karena masih digunakan oleh data lain.');
-            }
-
-            $kategori = Kategori::findOrFail($id);
+            // FIX: Menggunakan Eloquent Model delete()
             $kategori->delete();
-
             return redirect()->route('admin.kategori.index')
-                             ->with('success', 'Kategori penanganan berhasil dihapus.');
-
+                             ->with('success', 'Kategori hewan berhasil dihapus.');
         } catch (\Exception $e) {
-            // Menangani error jika terjadi masalah saat query database
+            // Log the error for debugging
+            Log::error('Gagal menghapus kategori: ' . $e->getMessage());
+
             return redirect()->route('admin.kategori.index')
-                             ->with('error', 'Terjadi kesalahan saat menghapus data: ' . $e->getMessage());
+                             ->with('error', 'Gagal menghapus kategori. Pastikan tidak ada data yang terkait.');
         }
     }
 
@@ -83,14 +82,14 @@ public function destroy($id)
         // Menggunakan helper untuk memastikan format nama yang benar
         $validatedData['nama_kategori'] = $this->formatNamaKategori($validatedData['nama_kategori']);
 
-        DB::table('kategori')->insert([
+        // FIX: Menggunakan Eloquent Model (Kategori::create)
+        Kategori::create([
             'nama_kategori' => $validatedData['nama_kategori'],
-            'created_at' => now(),
-            'updated_at' => now(),
+            // created_at dan updated_at akan terisi otomatis jika timestamps aktif
         ]);
 
         return redirect()->route('admin.kategori.index')
-                         ->with('success', 'Kategori penanganan berhasil ditambahkan.');
+                         ->with('success', 'Kategori hewan berhasil ditambahkan.');
     }
 
     private function validateKategori(Request $request, $id = null)

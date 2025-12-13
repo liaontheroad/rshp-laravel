@@ -1,64 +1,55 @@
-<!DOCTYPE html>
-<html lang="en">
-
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>AdminLTE 4 | @yield('title', 'Dashboard')</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="title" content="AdminLTE 4 | Dashboard">
-    <meta name="author" content="ColorlibHQ">
-    <meta name="description" content="AdminLTE is a Free Bootstrap 5 Admin Dashboard featuring over 800 components, 1000+ icons and 20+ pages.">
-    <meta name="keywords" content="bootstrap 5, bootstrap, bootstrap 5 admin dashboard, bootstrap 5 dashboard, bootstrap 5 charts, bootstrap 5 calendar, bootstrap 5 datepicker, bootstrap 5 tables, bootstrap 5 datatable, bootstrap 5 icons, responsive bootstrap 5 admin dashboard, free bootstrap 5 admin dashboard, free bootstrap 5 dashboard, adminlte">
-    <!-- Google Font: Source Sans Pro -->
+    <title>RSHP UNAIR | @yield('title', 'Dashboard')</title>
+    {{-- ... other meta tags ... --}}
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="{{ asset('adminlte/assets/plugins/fontawesome-free/css/all.min.css') }}">
-    <!-- overlayScrollbars -->
-    <link rel="stylesheet" href="{{ asset('adminlte/assets/plugins/overlayScrollbars/css/OverlayScrollbars.min.css') }}">
-    <!-- AdminLTE Theme style -->
-    <link rel="stylesheet" href="{{ asset('adminlte/css/adminlte.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('AdminLTE-4.0.0-rc4/dist/plugins/fontawesome-free/css/all.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('AdminLTE-4.0.0-rc4/dist/plugins/overlayScrollbars/css/OverlayScrollbars.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('AdminLTE-4.0.0-rc4/dist/css/adminlte.min.css') }}">
 
     @stack('styles')
 </head>
 
 <body class="layout-fixed sidebar-expand-lg bg-body-tertiary">
     <div class="app-wrapper">
-        <!-- Navbar -->
         <nav class="app-header navbar navbar-expand bg-body">
             <div class="container-fluid">
-                <!-- Start navbar links -->
-                <ul class="navbar-nav">
+             <ul class="navbar-nav">
                     <li class="nav-item">
                         <a class="nav-link" data-lte-toggle="sidebar" href="#" role="button">
                             <i class="fa-solid fa-bars"></i>
                         </a>
                     </li>
-                    <li class="nav-item d-none d-md-block">
-                        <a href="#" class="nav-link">Home</a>
-                    </li>
+                    <a class="nav-link" data-lte-toggle="sidebar" href="#" role="button">
+                         <i class="fa-solid fa-bars" style="color: black !important;"></i>
+                    </a>
                 </ul>
-
-                <!-- End navbar links -->
                 <ul class="navbar-nav ms-auto">
-                    <!-- User Menu Dropdown -->
+                <!-- User Menu Dropdown -->
                     <li class="nav-item dropdown user-menu">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                            <img src="{{ asset('adminlte/assets/img/user2-160x160.jpg') }}" class="user-image img-circle shadow" alt="User Image">
-                            <span class="d-none d-md-inline">Admin</span>
+                            <img src="{{ asset('AdminLTE-4.0.0-rc4/dist/assets/img/user2-160x160.jpg') }}" class="user-image img-circle shadow" alt="User Image">
+                            <span class="d-none d-md-inline">{{ Auth::user()->name ?? 'Admin' }}</span>
                         </a>
-                        <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-end">
+                      <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-end"> 
                             <!-- User image -->
                             <li class="user-header bg-primary">
-                                <img src="{{ asset('adminlte/assets/img/user2-160x160.jpg') }}" class="img-circle shadow" alt="User Image">
-                                <p>
-                                    Admin
-                                    <small>Member since Nov. 2023</small>
-                                </p>
+                            {{-- ... user image content ... --}}
                             </li>
                             <!-- Menu Footer-->
                             <li class="user-footer">
                                 <a href="#" class="btn btn-default btn-flat">Profile</a>
-                                <a href="#" class="btn btn-default btn-flat float-end">Sign out</a>
+                                
+                                {{-- LOGOUT BUTTON AND FORM --}}
+                                <a class="btn btn-default btn-flat float-end" href="{{ route('logout') }}"
+                                   onclick="event.preventDefault();
+                                                 document.getElementById('logout-form').submit();">
+                                    Sign out
+                                </a>
+
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                    @csrf
+                                </form>
                             </li>
                         </ul>
                     </li>
@@ -67,47 +58,85 @@
         </nav>
         <!-- /.navbar -->
 
-        <!-- Main Sidebar Container -->
-        <aside class="app-sidebar bg-body-secondary shadow" data-bs-theme="dark">
-            <div class="sidebar-brand">
-                <a href="#" class="brand-link">
-                    <img src="{{ asset('adminlte/assets/img/AdminLTELogo.png') }}" alt="AdminLTE Logo" class="brand-image opacity-75 shadow">
-                    <span class="brand-text fw-light">AdminLTE 4</span>
-                </a>
-            </div>
+<!-- Main Sidebar Container -->
+<aside class="app-sidebar bg-body-secondary shadow" data-bs-theme="dark">
+    <div class="sidebar-brand">
+        <a href="{{ route('admin.dashboard') }}" class="brand-link">
+            <img src="{{ asset('AdminLTE-4.0.0-rc4/dist/assets/img/AdminLTELogo.png') }}" alt="RSHP Logo" class="brand-image opacity-75 shadow">
+            <span class="brand-text fw-light">RSHP Admin</span>
+        </a>
+    </div>
+    <!-- Sidebar -->
+    <div class="sidebar-wrapper">
+        <nav class="mt-2">
 
-            <!-- Sidebar -->
-            <div class="sidebar-wrapper">
-                <nav class="mt-2">
-                    <!-- Sidebar Menu -->
+                {{-- ================================================= --}}
+                {{--                      ADMIN MENU (role_id == 1)      --}}
+                {{-- ================================================= --}}
+                @if(session('user_role') == 1)
                     <ul class="nav sidebar-menu flex-column" data-lte-toggle="treeview" role="menu" data-accordion="false">
+                        
                         <li class="nav-item">
-                            <a href="#" class="nav-link active">
+                            <a href="{{ route('admin.dashboard') }}" class="nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
                                 <i class="nav-icon fa-solid fa-gauge"></i>
-                                <p>
-                                    Dashboard
-                                </a>
-                            </li>
+                                <p>Dashboard</p>
+                            </a>
+                        </li>
 
-                            <li class="nav-header">MANAJEMEN DATA</li>
-                            <li class="nav-item">
-                                <a href="{{ route('admin.kategori.index') }}" class="nav-link {{ request()->routeIs('admin.kategori.*') ? 'active' : '' }}">
-                                    <i class="nav-icon fas fa-tags"></i>
-                                    <p>
-                                        Kategori
-                                    </p>
-                                </a>
-                            </li>
-                        {{-- Add other menu items here --}}
+                        <li class="nav-header">MANAJEMEN DATA (MASTER)</li>
+                        <li class="nav-item"><a href="{{ route('admin.jenis-hewan.index') }}" class="nav-link {{ request()->routeIs('admin.jenis-hewan.*') ? 'active' : '' }}"><i class="nav-icon fas fa-paw"></i><p>Jenis Hewan</p></a></li>
+                        <li class="nav-item"><a href="{{ route('admin.ras-hewan.index') }}" class="nav-link {{ request()->routeIs('admin.ras-hewan.*') ? 'active' : '' }}"><i class="nav-icon fas fa-dog"></i><p>Ras Hewan</p></a></li>
+                        <li class="nav-item"><a href="{{ route('admin.kategori.index') }}" class="nav-link {{ request()->routeIs('admin.kategori.*') ? 'active' : '' }}"><i class="nav-icon fas fa-tags"></i><p>Kategori</p></a></li>
+                        <li class="nav-item"><a href="{{ route('admin.kategori-klinis.index') }}" class="nav-link {{ request()->routeIs('admin.kategori-klinis.*') ? 'active' : '' }}"><i class="nav-icon fas fa-clipboard-list"></i><p>Kategori Klinis</p></a></li>
+                        <li class="nav-item"><a href="{{ route('admin.kode-tindakan-terapi.index') }}" class="nav-link {{ request()->routeIs('admin.kode-tindakan-terapi.*') ? 'active' : '' }}"><i class="nav-icon fas fa-hand-holding-medical"></i><p>Kode Tindakan & Terapi</p></a></li>
+
+                        <li class="nav-header">MANAJEMEN PENGGUNA</li>
+                        <li class="nav-item"><a href="{{ route('admin.users.index') }}" class="nav-link {{ request()->routeIs('admin.users.*') ? 'active' : '' }}"><i class="nav-icon fas fa-users"></i><p>User Akun</p></a></li>
+                        <li class="nav-item"><a href="{{ route('admin.roles.index') }}" class="nav-link {{ request()->routeIs('admin.roles.*') ? 'active' : '' }}"><i class="nav-icon fas fa-user-tag"></i><p>Role Akses</p></a></li>
+                        <li class="nav-item"><a href="{{ route('admin.pemilik.index') }}" class="nav-link {{ request()->routeIs('admin.pemilik.*') ? 'active' : '' }}"><i class="nav-icon fas fa-user-friends"></i><p>Data Pemilik</p></a></li>
+                        <li class="nav-item"><a href="{{ route('admin.dokter.index') }}" class="nav-link {{ request()->routeIs('admin.dokter.*') ? 'active' : '' }}"><i class="nav-icon fas fa-user-md"></i><p>Data Dokter</p></a></li>
+
+                        <li class="nav-header">MANAJEMEN PASIEN</li>
+                        <li class="nav-item"><a href="{{ route('admin.pets.index') }}" class="nav-link {{ request()->routeIs('admin.pets.*') ? 'active' : '' }}"><i class="nav-icon fas fa-heartbeat"></i><p>Data Pasien (Hewan)</p></a></li>
                     </ul>
-                </nav>
-            </div>
-            <!-- /.sidebar -->
-        </aside>
+                 @endif
 
-        <!-- Main content -->
+                {{-- ================================================= --}}
+                {{--                      DOKTER MENU (role_id == 2)     --}}
+                {{-- ================================================= --}}
+                @if(session('user_role') == 2)
+                    <ul class="nav sidebar-menu flex-column" data-lte-toggle="treeview" role="menu" data-accordion="false">
+
+                        <li class="nav-item">
+                            <a href="{{ route('dokter.dashboard') }}" class="nav-link {{ request()->routeIs('dokter.dashboard') ? 'active' : '' }}">
+                                <i class="nav-icon fa-solid fa-gauge"></i>
+                                <p>Dashboard</p>
+                            </a>
+                        </li>
+                        
+                        <li class="nav-header">KLINIK VETERINER</li>
+                        <li class="nav-item">
+                            <a href="{{ route('dokter.pets.index') }}" class="nav-link {{ request()->routeIs('dokter.pets.*') ? 'active' : '' }}">
+                                <i class="nav-icon fas fa-clipboard-list"></i>
+                                <p>View Data Pasien</p>
+                            </a>
+                        </li>
+                        
+                        <li class="nav-item">
+                            <a href="{{ route('dokter.rekam-medis.index') }}" class="nav-link {{ request()->routeIs('dokter.rekam-medis.*') ? 'active' : '' }}">
+                                <i class="nav-icon fas fa-history"></i>
+                                <p>Rekam Medis (CRUD)</p>
+                            </a>
+                        </li>
+                @endif
+        </nav>
+    </div>
+    <!-- /.sidebar -->
+</aside>
+
+<!-- Main content -->
         <main class="app-main">
-            <!-- Main content -->
+            <!-- Main content header (Breadcrumb & Title) -->
             <div class="app-content-header">
                 <div class="container-fluid">
                     <div class="row">
@@ -115,8 +144,9 @@
                             <h3 class="mb-0">@yield('content-header', 'Page')</h3>
                         </div>
                         <div class="col-sm-6">
-                            <ol class="breadcrumb float-sm-end">
-                                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                            {{-- BREADCRUMBS RESTORED --}}
+                            <ol class="breadcrumb float-sm-end text-dark"> 
+                                <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}" class="text-dark">Home</a></li>
                                 <li class="breadcrumb-item active" aria-current="page">
                                     @yield('content-header', 'Page')
                                 </li>
@@ -127,7 +157,8 @@
             </div>
             <div class="app-content">
                 <div class="container-fluid">
-                    @yield('content')
+                    {{-- THIS IS THE CRITICAL CONTENT YIELD (YOUR "CANVAS") --}}
+                    @yield('content') 
                 </div>
             </div>
             <!-- /.content -->
@@ -137,25 +168,17 @@
         <!-- Main Footer -->
         <footer class="app-footer">
             <div class="float-end d-none d-sm-inline">
-                Anything you want
+                Version 4.0.0-rc4
             </div>
             <strong>Copyright &copy; 2014-2025 <a href="https://adminlte.io">AdminLTE.io</a>.</strong> All rights reserved.
         </footer>
     </div>
     <!-- ./wrapper -->
 
-    <!-- REQUIRED SCRIPTS -->
-
-    <!-- overlayScrollbars -->
-    <script src="{{ asset('adminlte/assets/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js') }}"></script>
-
-    <!-- Bootstrap 5 -->
-    <script src="{{ asset('adminlte/assets/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-
-    <!-- AdminLTE App -->
-    <script src="{{ asset('adminlte/js/adminlte.min.js') }}"></script>
+    </div>
+    <script src="{{ asset('AdminLTE-4.0.0-rc4/dist/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js') }}"></script>
+    <script src="{{ asset('AdminLTE-4.0.0-rc4/dist/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ asset('AdminLTE-4.0.0-rc4/dist/js/adminlte.min.js') }}"></script>
 
     @stack('scripts')
 </body>
-
-</html>
