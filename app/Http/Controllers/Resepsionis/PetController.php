@@ -1,24 +1,34 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Resepsionis;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Pet; 
-use App\Models\Pemilik; 
-use App\Models\JenisHewan; 
-use App\Models\RasHewan; 
+use App\Models\Pet;
+use App\Models\Pemilik;
+use App\Models\JenisHewan;
+use App\Models\RasHewan;
 use Illuminate\Validation\Rule;
 
 class PetController extends Controller
 {
-    /**
-     * Menampilkan daftar semua hewan peliharaan (pasien).
-     */
     public function index()
     {
-        $pets = Pet::getAll();
-        return view('admin.pets.index', compact('pets'));
+        $pets = Pet::with(['pemilik.user', 'rasHewan', 'jenisHewan'])
+            ->get()
+            ->map(function ($pet) {
+                return [
+                    'idpet' => $pet->idpet,
+                    'nama_pet' => $pet->nama,
+                    'nama_pemilik' => $pet->pemilik->user->nama ?? 'N/A',
+                    'nama_jenis_hewan' => $pet->jenisHewan->nama_jenis_hewan ?? 'N/A',
+                    'nama_ras' => $pet->rasHewan->nama_ras ?? 'N/A',
+                    'jenis_kelamin' => $pet->jenis_kelamin,
+                    'tanggal_lahir' => $pet->tanggal_lahir,
+                ];
+            });
+
+        return view('resepsionis.pets.index', compact('pets'));
     }
 
     /**
@@ -26,11 +36,16 @@ class PetController extends Controller
      */
     public function create()
     {
-        $pemilik = Pet::getAllOwnersForSelect();
-        $jenisHewan = JenisHewan::orderBy('nama_jenis_hewan')->get()->toArray();
-        $rasHewan = Pet::getAllBreedsForSelect();
+        $pemilik = Pemilik::with('user')->get()->map(function ($p) {
+            return [
+                'idpemilik' => $p->idpemilik,
+                'nama' => $p->user->nama ?? $p->user->name ?? 'N/A'
+            ];
+        });
+        $jenisHewan = JenisHewan::orderBy('nama_jenis_hewan')->get();
+        $rasHewan = RasHewan::with('jenis')->get();
 
-        return view('admin.pets.create', compact('pemilik', 'jenisHewan', 'rasHewan'));
+        return view('resepsionis.pets.create', compact('pemilik', 'jenisHewan', 'rasHewan'));
     }
 
     /**
@@ -50,7 +65,7 @@ class PetController extends Controller
         );
 
         if ($result['status'] === 'success') {
-            return redirect()->route('admin.pets.index')
+            return redirect()->route('resepsionis.pets.index')
                              ->with('success', $result['message']);
         } else {
             return redirect()->back()
@@ -66,61 +81,59 @@ class PetController extends Controller
     {
         $pet = Pet::with('rasHewan')->find($idpet);
 
-        // Tambahkan cek ini untuk menghindari error "Trying to get property of non-object"
         if (!$pet) {
-            return redirect()->route('admin.pets.index')
+            return redirect()->route('resepsionis.pets.index')
                              ->with('error', 'Pasien tidak ditemukan.');
         }
 
         $pemilik = Pemilik::with('user')->get();
         $jenisHewan = JenisHewan::orderBy('nama_jenis_hewan')->get();
-        $currentJenisId = $pet->rasHewan->idjenis_hewan ?? null;
-        $rasHewan = $currentJenisId ? RasHewan::where('idjenis_hewan', $currentJenisId)->get() : collect();
+        $rasHewan = RasHewan::with('jenis')->get();
 
-        return view('admin.pets.edit', compact('pet', 'pemilik', 'jenisHewan', 'rasHewan', 'currentJenisId'));
+        return view('resepsionis.pets.edit', compact('pet', 'pemilik', 'jenisHewan', 'rasHewan'));
     }
 
     /**
      * Memperbarui hewan peliharaan tertentu di database.
      */
-    public function update(Request $request, $idpet) 
+    public function update(Request $request, $idpet)
     {
         $pet = Pet::find($idpet);
 
         if (!$pet) {
-             return redirect()->route('admin.pets.index')
+             return redirect()->route('resepsionis.pets.index')
                              ->with('error', 'Pasien tidak ditemukan.');
         }
-        
+
         $validatedData = $this->validatePet($request, $pet->idpet);
 
         $pet->update($validatedData);
 
-        return redirect()->route('admin.pets.index')
+        return redirect()->route('resepsionis.pets.index')
                          ->with('success', 'Data Pasien (Pet) berhasil diperbarui.');
     }
 
     /**
      * Menghapus hewan peliharaan tertentu dari database.
      */
-    public function destroy($idpet) 
+    public function destroy($idpet)
     {
         $pet = Pet::find($idpet);
 
         if (!$pet) {
-             return redirect()->route('admin.pets.index')
+             return redirect()->route('resepsionis.pets.index')
                              ->with('error', 'Pasien tidak ditemukan.');
         }
 
         try {
             $pet->delete();
-            return redirect()->route('admin.pets.index')
+            return redirect()->route('resepsionis.pets.index')
                              ->with('success', 'Data Pasien (Pet) berhasil dihapus.');
         } catch (\Exception $e) {
-            return redirect()->route('admin.pets.index')
+            return redirect()->route('resepsionis.pets.index')
                              ->with('error', 'Gagal menghapus data pasien. Pastikan tidak ada rekam medis terkait.');
         }
-    } // Pastikan kurung kurawal penutup ini ADA
+    }
 
     /**
      * Helper untuk validasi data Pet.

@@ -12,7 +12,7 @@
             <div class="card-header">
                 <h3 class="card-title">Form Tambah Data Pemilik</h3>
                 <div class="card-tools">
-                    <a href="{{ route('admin.pemilik.index') }}" class="btn btn-sm btn-default" title="Kembali">
+                    <a href="{{ route('resepsionis.pemilik.index') }}" class="btn btn-sm btn-default" title="Kembali">
                         <i class="fas fa-arrow-left"></i> Kembali
                     </a>
                 </div>
@@ -42,7 +42,7 @@
                 @endif
                 
                 {{-- Form untuk Submit Data --}}
-                <form action="{{ route('admin.pemilik.store') }}" method="POST">
+                <form action="{{ route('resepsionis.pemilik.store') }}" method="POST">
                     @csrf
 
                     

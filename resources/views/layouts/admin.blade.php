@@ -190,7 +190,26 @@
                             <p>Dashboard Perawat</p>
                         </a>
                     </li>
-                    {{-- Add specific Perawat links here later --}}
+                    <li class="nav-header">DATA PASIEN</li>
+                    <li class="nav-item">
+                        <a href="{{ route('perawat.pets.index') }}" class="nav-link {{ request()->routeIs('perawat.pets.*') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-cat"></i>
+                            <p>Data Pasien</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('perawat.rekam-medis.index') }}" class="nav-link {{ request()->routeIs('perawat.rekam-medis.*') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-notes-medical"></i>
+                            <p>Rekam Medis</p>
+                        </a>
+                    </li>
+                    <li class="nav-header">PROFIL</li>
+                    <li class="nav-item">
+                        <a href="{{ route('perawat.profile.show') }}" class="nav-link {{ request()->routeIs('perawat.profile.*') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-user"></i>
+                            <p>Profil Perawat</p>
+                        </a>
+                    </li>
 
                 @endif {{-- End of role check --}}
             @endauth

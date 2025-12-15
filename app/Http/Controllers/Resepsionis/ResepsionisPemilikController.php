@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Resepsionis;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -12,7 +12,7 @@ use App\Models\Pemilik;
 use App\Models\User;
 use App\Models\Role;
 
-class PemilikController extends Controller
+class ResepsionisPemilikController extends Controller
 {
     private function redirectWithMessage($route, $message, $type = 'success')
     {
@@ -29,7 +29,7 @@ class PemilikController extends Controller
                     return $pemilik->user->nama;
                 });
 
-            return view('admin.pemilik.index', compact('pemilikList'));
+            return view('resepsionis.pemilik.index', compact('pemilikList'));
         } catch (\Throwable $e) {
             Log::error("Error fetch pemilik: " . $e->getMessage());
             return back()->with('danger', 'Gagal memuat data pemilik.');
@@ -38,7 +38,7 @@ class PemilikController extends Controller
 
     public function create()
     {
-        return view('admin.pemilik.create');
+        return view('resepsionis.pemilik.create');
     }
 
     public function store(Request $request)
@@ -64,9 +64,8 @@ class PemilikController extends Controller
             ]);
 
             // 2. Buat Profil Pemilik
-            // HAPUS 'nama' & 'email' dari sini agar tidak error
             Pemilik::create([
-            'id_user' => $user->iduser,
+                'iduser' => $user->iduser,
                 'no_wa'  => $request->no_wa,
                 'alamat' => $request->alamat,
             ]);
@@ -78,7 +77,7 @@ class PemilikController extends Controller
             }
 
             DB::commit();
-            return $this->redirectWithMessage('admin.pemilik.index', '✅ User & Profil Pemilik berhasil dibuat.');
+            return $this->redirectWithMessage('resepsionis.pemilik.index', '✅ User & Profil Pemilik berhasil dibuat.');
 
         } catch (\Throwable $e) {
             DB::rollBack();
@@ -93,7 +92,7 @@ class PemilikController extends Controller
             $pemilik = Pemilik::with('user')->find($pemilik->idpemilik);
             if (!$pemilik) return back()->with('danger', 'Data tidak ditemukan.');
 
-            return view('admin.pemilik.edit', compact('pemilik'));
+            return view('resepsionis.pemilik.edit', compact('pemilik'));
         } catch (\Throwable $e) {
             return back()->with('danger', 'Error memuat data.');
         }
@@ -121,14 +120,13 @@ class PemilikController extends Controller
             ]);
 
             // Update Pemilik (Hanya WA & Alamat)
-            // HAPUS 'nama' & 'email' dari sini agar tidak error
             $pemilik->update([
                 'no_wa'  => $request->no_wa,
                 'alamat' => $request->alamat,
             ]);
 
             DB::commit();
-            return $this->redirectWithMessage('admin.pemilik.index', '✅ Data berhasil diperbarui.');
+            return $this->redirectWithMessage('resepsionis.pemilik.index', '✅ Data berhasil diperbarui.');
 
         } catch (\Throwable $e) {
             DB::rollBack();

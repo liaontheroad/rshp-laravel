@@ -25,6 +25,25 @@ class PeliharaanController extends Controller
                         $query->where('iduser', $userId);
                     })->get();
 
-        return view('pemilik.index', compact('pets'));
+        return view('pemilik.pet.index', compact('pets'));
+    }
+
+    /**
+     * Menampilkan detail pet tertentu.
+     */
+    public function show($id)
+    {
+        // Mengambil ID user yang sedang login
+        $userId = Auth::id();
+
+        // Mengambil data pet berdasarkan ID, dengan validasi kepemilikan
+        $pet = Pet::with(['rasHewan.jenis', 'pemilik'])
+                  ->whereHas('pemilik', function ($query) use ($userId) {
+                      $query->where('iduser', $userId);
+                  })
+                  ->findOrFail($id);
+
+        $pets = collect([$pet]);
+        return view('pemilik.pet.index', compact('pets'));
     }
 }

@@ -66,6 +66,18 @@ class RasHewanController extends Controller
     }
 
     /**
+     * API untuk mendapatkan ras hewan berdasarkan jenis hewan.
+     */
+    public function getRasByJenis($idJenis)
+    {
+        $rasHewan = RasHewan::where('idjenis_hewan', $idJenis)
+                            ->select('idras_hewan', 'nama_ras')
+                            ->get();
+
+        return response()->json($rasHewan);
+    }
+
+    /**
      * Helper untuk validasi data Ras Hewan.
      */
     private function validateRasHewan(Request $request, $id = null)
@@ -74,7 +86,7 @@ class RasHewanController extends Controller
         if ($id) {
             $uniqueRule->ignore($id, 'idras_hewan');
         }
-        
+
         return $request->validate([
             'nama_ras' => [
                 'required',

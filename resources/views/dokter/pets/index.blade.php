@@ -65,9 +65,9 @@
             @forelse($pets as $pet)
                 <tr>
                     <td>{{ $pet->idpet }}</td>
-                    <td>{{ $pet->nama_pet }}</td>
-                    <td>{{ $pet->rasHewan->jenis->nama_jenis_hewan ?? 'N/A' }}</td>
-                    <td>{{ $pet->rasHewan->nama_ras_hewan ?? 'N/A' }}</td>
+                    <td>{{ $pet->nama }}</td>
+                    <td>{{ $pet->ras->jenis->nama_jenis_hewan ?? 'N/A' }}</td>
+                    <td>{{ $pet->ras->nama_ras ?? 'N/A' }}</td>
                     <td>{{ $pet->pemilik->user->nama ?? 'N/A' }}</td>
                     <td class="action-buttons">
                         <a href="{{ route('dokter.pets.edit', $pet->idpet) }}" class="edit-btn">Edit</a>

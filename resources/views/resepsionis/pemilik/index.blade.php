@@ -14,7 +14,7 @@
                 <h3 class="card-title">Daftar Pemilik Hewan Peliharaan</h3>
                 <div class="card-tools">
                     {{-- Tombol Tambah di kanan atas Card --}}
-                    <a href="{{ route('admin.pemilik.create') }}" class="btn btn-primary btn-sm">
+                    <a href="{{ route('resepsionis.pemilik.create') }}" class="btn btn-primary btn-sm">
                         <i class="fas fa-user-plus"></i> Tambah Pemilik
                     </a>
                 </div>
@@ -64,12 +64,12 @@
                                 
                                 <td class="text-center d-flex justify-content-center gap-2">
                                     {{-- Link Edit --}}
-                                    <a href="{{ route('admin.pemilik.edit', $item->idpemilik) }}" class="btn btn-sm btn-info" title="Edit">
+                                    <a href="{{ route('resepsionis.pemilik.edit', $item->idpemilik) }}" class="btn btn-sm btn-info" title="Edit">
                                         <i class="fas fa-edit"></i> Edit
                                     </a>
 
                                     {{-- Form Delete --}}
-                                    <form action="{{ route('admin.pemilik.destroy', $item->idpemilik) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus data pemilik {{ $item->user->name ?? $item->user->nama ?? 'ini' }}? Tindakan ini tidak dapat dibatalkan.');" style="display:inline;">
+                                    <form action="{{ route('resepsionis.pemilik.destroy', $item->idpemilik) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus data pemilik {{ $item->user->name ?? $item->user->nama ?? 'ini' }}? Tindakan ini tidak dapat dibatalkan.');" style="display:inline;">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-sm btn-danger" title="Hapus">

@@ -13,9 +13,8 @@ class PetController extends Controller
      */
     public function index()
     {
-        // TODO: Add logic to fetch patients
-        // For now, we'll just return a view.
-        return view('dokter.pets.index');
+        $pets = Pet::with(['pemilik.user', 'ras.jenis'])->get();
+        return view('dokter.pets.index', compact('pets'));
     }
 
     /**

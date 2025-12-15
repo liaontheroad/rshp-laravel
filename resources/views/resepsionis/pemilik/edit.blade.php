@@ -1,18 +1,18 @@
 @extends('layouts.app')
 
-@section('title', 'Tambah Data Pemilik')
-@section('content-header', 'Tambah Data Pemilik Baru')
+@section('title', 'Edit Data Pemilik')
+@section('content-header', 'Edit Data Pemilik')
 
 @section('content')
 <div class="row justify-content-center"> {{-- Pusatkan Card --}}
     <div class="col-lg-8 col-md-10 col-sm-12">
         
         {{-- Card Utama untuk Form --}}
-        <div class="card card-success card-outline"> 
+        <div class="card card-info card-outline"> 
             <div class="card-header">
-                <h3 class="card-title">Form Tambah Data Pemilik</h3>
+                <h3 class="card-title">Form Edit Pemilik: **{{ $pemilik->user->name ?? $pemilik->user->nama }}**</h3>
                 <div class="card-tools">
-                    <a href="{{ route('admin.pemilik.index') }}" class="btn btn-sm btn-default" title="Kembali">
+                    <a href="{{ route('resepsionis.pemilik.index') }}" class="btn btn-sm btn-default" title="Kembali">
                         <i class="fas fa-arrow-left"></i> Kembali
                     </a>
                 </div>
@@ -32,7 +32,7 @@
                         </ul>
                     </div>
                 @endif
-                
+
                 {{-- Flash Message (Error dari session('error')) --}}
                 @if (session('error'))
                     <div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -42,12 +42,13 @@
                 @endif
                 
                 {{-- Form untuk Submit Data --}}
-                <form action="{{ route('admin.pemilik.store') }}" method="POST">
+                <form action="{{ route('resepsionis.pemilik.update', $pemilik->idpemilik) }}" method="POST">
                     @csrf
+                    @method('PUT')
 
                     
                     {{-- =================================== --}}
-                    <h5 class="mt-3 mb-3 pb-2 border-bottom text-success">Data Akun & Login</h5>
+                    <h5 class="mt-3 mb-3 pb-2 border-bottom text-primary">Data Akun & User</h5>
                     {{-- =================================== --}}
                     
                     {{-- Nama --}}
@@ -58,7 +59,8 @@
                             class="form-control @error('nama') is-invalid @enderror"
                             id="nama"
                             name="nama"
-                            value="{{ old('nama') }}"
+                            {{-- Menggunakan $pemilik->user->name jika ada, fallback ke $pemilik->user->nama --}}
+                            value="{{ old('nama', $pemilik->user->name ?? $pemilik->user->nama) }}"
                             placeholder="Masukkan nama lengkap pemilik"
                             required
                         >
@@ -75,7 +77,7 @@
                             class="form-control @error('email') is-invalid @enderror"
                             id="email"
                             name="email"
-                            value="{{ old('email') }}"
+                            value="{{ old('email', $pemilik->user->email) }}"
                             placeholder="Masukkan alamat email aktif"
                             required
                         >
@@ -83,26 +85,10 @@
                             <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror
                     </div>
-
-                    {{-- Password --}}
-                    <div class="mb-3">
-                        <label for="password" class="form-label">Password <span class="text-danger">*</span></label>
-                        <input
-                            type="password"
-                            class="form-control @error('password') is-invalid @enderror"
-                            id="password"
-                            name="password"
-                            placeholder="Masukkan password (minimal 6 karakter)"
-                            required
-                        >
-                        @error('password')
-                            <div class="invalid-feedback d-block">{{ $message }}</div>
-                        @enderror
-                    </div>
                     
                     
                     {{-- =================================== --}}
-                    <h5 class="mt-4 mb-3 pb-2 border-bottom text-success">Data Profil Pemilik</h5>
+                    <h5 class="mt-4 mb-3 pb-2 border-bottom text-primary">Data Profil Pemilik</h5>
                     {{-- =================================== --}}
 
                     {{-- Nomor WhatsApp --}}
@@ -113,7 +99,7 @@
                             class="form-control @error('no_wa') is-invalid @enderror"
                             id="no_wa"
                             name="no_wa"
-                            value="{{ old('no_wa') }}"
+                            value="{{ old('no_wa', $pemilik->no_wa) }}"
                             placeholder="Masukkan nomor WhatsApp aktif"
                             required
                         >
@@ -132,15 +118,15 @@
                             rows="3"
                             placeholder="Masukkan alamat lengkap pemilik"
                             required
-                        >{{ old('alamat') }}</textarea>
+                        >{{ old('alamat', $pemilik->alamat) }}</textarea>
                         @error('alamat')
                             <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror
                     </div>
 
                     <div class="d-grid gap-2">
-                        <button type="submit" class="btn btn-primary mt-3"> {{-- Tombol submit berwarna hijau --}}
-                            <i class="fas fa-save"></i> Simpan Data Pemilik
+                        <button type="submit" class="btn btn-primary mt-3"> {{-- Tombol submit berwarna biru --}}
+                            <i class="fas fa-save"></i> Perbarui Data Pemilik
                         </button>
                     </div>
                 </form>

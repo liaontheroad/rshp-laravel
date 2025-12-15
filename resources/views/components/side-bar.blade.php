@@ -42,4 +42,15 @@
             @endif
         </ul>
     </nav>
+
+    <!-- Logout Button -->
+    <div class="p-4 border-t border-gray-200">
+        <form action="{{ route('logout') }}" method="POST" class="w-full">
+            @csrf
+            <button type="submit" class="w-full bg-red-500 hover:bg-red-600 text-white font-medium py-2 px-4 rounded-lg transition duration-200 flex items-center justify-center gap-2">
+                <i class="fas fa-sign-out-alt"></i>
+                Logout
+            </button>
+        </form>
+    </div>
 </div>

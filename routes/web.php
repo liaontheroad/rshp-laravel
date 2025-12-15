@@ -24,7 +24,10 @@ use App\Http\Controllers\Dokter\RekamMedisController;
 use App\Http\Controllers\Dokter\ProfileController;
 
 use App\Http\Controllers\Perawat\DashboardPerawatController;
-use App\Http\Controllers\Resepsionis\DashboardResepsionisController;
+use App\Http\Controllers\Resepsionis\DashboardController as ResepsionisDashboardController;
+use App\Http\Controllers\Resepsionis\TemuDokterController;
+use App\Http\Controllers\Resepsionis\PetController;
+use App\Http\Controllers\Resepsionis\ResepsionisPemilikController;
 use App\Http\Controllers\Pemilik\DashboardPemilikController;
 use App\Http\Controllers\Resepsionis\PendaftaranController;
 use App\Http\Controllers\Pemilik\PeliharaanController;
@@ -61,6 +64,9 @@ Route::resource('roles', RoleController::class);
 Route::resource('pemilik', PemilikController::class);
 Route::resource('dokter', AdminDokterController::class);
 Route::resource('pets', AdminPetController::class);
+
+// API for dependent dropdown
+Route::get('/api/get-ras/{idJenis}', [RasHewanController::class, 'getRasByJenis'])->name('api.get-ras');
 });      
 
 //akses Dokter
@@ -73,28 +79,41 @@ Route::middleware(['isDokter'])->prefix('dokter')->name('dokter.')->group(functi
     // Medical Record Management
     Route::get('/rekam-medis', [RekamMedisController::class, 'index'])->name('rekam-medis.index');
     Route::patch('/rekam-medis/{reservasi}/status', [RekamMedisController::class, 'updateStatus'])->name('rekam-medis.updateStatus');
-    // Placeholder for future routes
-    // Route::get('/rekam-medis/create', [RekamMedisController::class, 'create'])->name('rekam-medis.create');
-    // Route::get('/rekam-medis/history/{pet}', [RekamMedisController::class, 'history'])->name('rekam-medis.history');
+    Route::get('/rekam-medis/create', [RekamMedisController::class, 'create'])->name('rekam-medis.create');
+    Route::post('/rekam-medis', [RekamMedisController::class, 'store'])->name('rekam-medis.store');
+    Route::get('/rekam-medis/history/{pet}', [RekamMedisController::class, 'history'])->name('rekam-medis.history');
 });
-
 
 //akses Perawat
-Route::middleware(['isPerawat'])->group(function () {
-    Route::get('/perawat/dashboard', [DashboardPerawatController::class, 'index'])->name('perawat.dashboard');
-});
+Route::middleware(['isPerawat'])->prefix('perawat')->name('perawat.')->group(function () {
+    Route::get('/dashboard', [DashboardPerawatController::class, 'index'])->name('dashboard');
 
+    // Data Pasien
+    Route::resource('pets', PetController::class)->only(['index', 'show']);
+
+    // Rekam Medis CRUD
+    Route::resource('rekam-medis', RekamMedisController::class);
+
+    // Profil Perawat
+    Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
+});
 //akses Resepsionis
-Route::middleware(['isResepsionis'])->group(function () {
-    Route::get('/resepsionis/dashboard', [DashboardResepsionisController::class, 'index'])->name('resepsionis.dashboard');
-    Route::get('/resepsionis/pendaftaran', [PendaftaranController::class, 'index'])->name('resepsionis.pendaftaran');
+Route::middleware(['isResepsionis'])->prefix('resepsionis')->name('resepsionis.')->group(function () {
+    Route::get('/dashboard', [ResepsionisDashboardController::class, 'index'])->name('dashboard');
+    Route::resource('temu-dokter', TemuDokterController::class);
+    Route::resource('pets', PetController::class);
+    Route::resource('pemilik', ResepsionisPemilikController::class);
 });
 
 //akses Pemilik
-Route::middleware(['isPemilik'])->group(function () {
-    Route::get('/pemilik/dashboard', [DashboardPemilikController::class, 'index'])->name('pemilik.dashboard');
-    Route::get('/pemilik/pets', [PeliharaanController::class, 'index'])->name('pemilik.pets.index');
+Route::middleware(['isPemilik'])->prefix('pemilik')->name('pemilik.')->group(function () {
+    Route::get('/dashboard', [DashboardPemilikController::class, 'index'])->name('dashboard');
+    // Pets Routes (Read Only: Index & Show)
+    Route::resource('pets', PeliharaanController::class)->only(['index', 'show']);
+    // Temu Dokter Routes (Read Only: Index & Show)
+    Route::resource('temu-dokter', TemuDokterController::class)->only(['index', 'show']);
+    // Rekam Medis Routes (Read Only: Index & Show)
+    Route::resource('rekam-medis', RekamMedisController::class)->only(['index', 'show']);
 });
-
 
 ?>

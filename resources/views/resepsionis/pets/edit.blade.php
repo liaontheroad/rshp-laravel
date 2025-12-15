@@ -10,7 +10,7 @@
             <div class="card-header">
                 <h3 class="card-title">Form Edit Pasien: **{{ $pet->nama }}**</h3>
                 <div class="card-tools">
-                    <a href="{{ route('admin.pets.index') }}" class="btn btn-sm btn-default" title="Kembali">
+                    <a href="{{ route('resepsionis.pets.index') }}" class="btn btn-sm btn-default" title="Kembali">
                         <i class="fas fa-arrow-left"></i> Kembali
                     </a>
                 </div>
@@ -40,7 +40,7 @@
                 @endif
                 
                 {{-- Form untuk Submit Data --}}
-                <form action="{{ route('admin.pets.update', $pet->idpet) }}" method="POST">
+                <form action="{{ route('resepsionis.pets.update', $pet->idpet) }}" method="POST">
                     @csrf
                     @method('PUT')
 

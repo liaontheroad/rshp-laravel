@@ -1,21 +1,21 @@
 @extends('layouts.app')
 
 {{-- Judul Halaman yang Muncul di Tab Browser --}}
-@section('title', 'Manajemen Data Pemilik')
+@section('title', 'Manajemen Data Pasien (Pets)')
 
 {{-- Judul Konten yang Muncul di Breadcrumb Bar --}}
-@section('content-header', 'Manajemen Data Pemilik')
+@section('content-header', 'Manajemen Data Pasien')
 
 @section('content')
 <div class="row">
     <div class="col-12">
         <div class="card card-primary card-outline"> {{-- Menggunakan card-primary untuk warna utama --}}
             <div class="card-header">
-                <h3 class="card-title">Daftar Pemilik Hewan Peliharaan</h3>
+                <h3 class="card-title">Daftar Pasien (Hewan Peliharaan)</h3>
                 <div class="card-tools">
                     {{-- Tombol Tambah di kanan atas Card --}}
-                    <a href="{{ route('admin.pemilik.create') }}" class="btn btn-primary btn-sm">
-                        <i class="fas fa-user-plus"></i> Tambah Pemilik
+                    <a href="{{ route('resepsionis.pets.create') }}" class="btn btn-primary btn-sm">
+                        <i class="fas fa-paw"></i> Tambah Pasien Baru
                     </a>
                 </div>
             </div>
@@ -44,32 +44,43 @@
                         <thead class="table-light">
                             <tr>
                                 <th style="width: 5%">ID</th>
-                                <th style="width: 20%">Nama Pemilik</th>
-                                <th style="width: 10%">Nomor HP</th>
-                                <th style="width: 20%">Email</th>
-                                <th style="width: 25%">Alamat</th>
-                                <th style="width: 20%; text-align: center;">Aksi</th>
+                                <th style="width: 15%">Nama Pasien</th>
+                                <th style="width: 15%">Pemilik</th>
+                                <th style="width: 10%">Jenis</th>
+                                <th style="width: 10%">Ras</th>
+                                <th style="width: 10%">Kelamin</th>
+                                <th style="width: 10%">Tanggal Lahir</th>
+                                <th style="width: 15%; text-align: center;">Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse ($pemilikList as $item)
+                            @forelse ($pets as $pet)
                             <tr>
-                                <td>{{ $item->idpemilik }}</td>
-                                {{-- Menggunakan relasi user --}}
-                                <td>{{ $item->user->name ?? $item->user->nama ?? 'N/A' }}</td> 
-                                <td>{{ $item->no_wa }}</td>
-                                <td>{{ $item->user->email ?? '-' }}</td>
-                                {{-- Menggunakan Str::limit dari Laravel untuk alamat panjang --}}
-                                <td>{{ Str::limit($item->alamat, 50) }}</td>
+                                <td>{{ $pet['idpet'] }}</td>
+                                <td><strong>{{ $pet['nama_pet'] }}</strong></td>
+                                <td>{{ $pet['nama_pemilik'] ?? 'N/A' }}</td>
+                                <td>{{ $pet['nama_jenis_hewan'] ?? 'N/A' }}</td>
+                                <td>{{ $pet['nama_ras'] ?? 'N/A' }}</td>
+                                <td>
+                                    {{-- Menggunakan badge untuk Jenis Kelamin --}}
+                                    @if ($pet['jenis_kelamin'] == 'J')
+                                        <span class="badge bg-primary">Jantan</span>
+                                    @elseif ($pet['jenis_kelamin'] == 'B')
+                                        <span class="badge bg-danger">Betina</span>
+                                    @else
+                                        -
+                                    @endif
+                                </td>
+                                <td>{{ \Carbon\Carbon::parse($pet['tanggal_lahir'])->format('d M Y') }}</td>
                                 
                                 <td class="text-center d-flex justify-content-center gap-2">
                                     {{-- Link Edit --}}
-                                    <a href="{{ route('admin.pemilik.edit', $item->idpemilik) }}" class="btn btn-sm btn-info" title="Edit">
+                                    <a href="{{ route('resepsionis.pets.edit', $pet['idpet']) }}" class="btn btn-sm btn-info" title="Edit">
                                         <i class="fas fa-edit"></i> Edit
                                     </a>
 
                                     {{-- Form Delete --}}
-                                    <form action="{{ route('admin.pemilik.destroy', $item->idpemilik) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus data pemilik {{ $item->user->name ?? $item->user->nama ?? 'ini' }}? Tindakan ini tidak dapat dibatalkan.');" style="display:inline;">
+                                    <form action="{{ route('resepsionis.pets.destroy', $pet['idpet']) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus data pasien {{ $pet['nama_pet'] }}?');" style="display:inline;">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-sm btn-danger" title="Hapus">
@@ -80,7 +91,7 @@
                             </tr>
                             @empty
                             <tr>
-                                <td colspan="6" class="text-center text-muted">Tidak ada data pemilik yang terdaftar.</td>
+                                <td colspan="8" class="text-center text-muted">Tidak ada data pasien yang terdaftar.</td>
                             </tr>
                             @endforelse
                         </tbody>

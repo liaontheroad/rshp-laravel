@@ -94,10 +94,20 @@
                         <li class="nav-item"><a href="{{ route('admin.users.index') }}" class="nav-link {{ request()->routeIs('admin.users.*') ? 'active' : '' }}"><i class="nav-icon fas fa-users"></i><p>User Akun</p></a></li>
                         <li class="nav-item"><a href="{{ route('admin.roles.index') }}" class="nav-link {{ request()->routeIs('admin.roles.*') ? 'active' : '' }}"><i class="nav-icon fas fa-user-tag"></i><p>Role Akses</p></a></li>
                         <li class="nav-item"><a href="{{ route('admin.pemilik.index') }}" class="nav-link {{ request()->routeIs('admin.pemilik.*') ? 'active' : '' }}"><i class="nav-icon fas fa-user-friends"></i><p>Data Pemilik</p></a></li>
-                        <li class="nav-item"><a href="{{ route('admin.dokter.index') }}" class="nav-link {{ request()->routeIs('admin.dokter.*') ? 'active' : '' }}"><i class="nav-icon fas fa-user-md"></i><p>Data Dokter</p></a></li>
-
+                        
                         <li class="nav-header">MANAJEMEN PASIEN</li>
                         <li class="nav-item"><a href="{{ route('admin.pets.index') }}" class="nav-link {{ request()->routeIs('admin.pets.*') ? 'active' : '' }}"><i class="nav-icon fas fa-heartbeat"></i><p>Data Pasien (Hewan)</p></a></li>
+
+                        <li class="nav-header">ACCOUNT</li>
+                        <li class="nav-item">
+                            <a href="{{ route('logout') }}" class="nav-link" onclick="event.preventDefault(); document.getElementById('logout-form-sidebar').submit();">
+                                <i class="nav-icon fas fa-sign-out-alt"></i>
+                                <p>Logout</p>
+                            </a>
+                            <form id="logout-form-sidebar" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                @csrf
+                            </form>
+                        </li>
                     </ul>
                  @endif
 
@@ -128,10 +138,142 @@
                                 <p>Rekam Medis (CRUD)</p>
                             </a>
                         </li>
+
+                        <li class="nav-header">ACCOUNT</li>
+                        <li class="nav-item">
+                            <a href="{{ route('logout') }}" class="nav-link" onclick="event.preventDefault(); document.getElementById('logout-form-sidebar-dokter').submit();">
+                                <i class="nav-icon fas fa-sign-out-alt"></i>
+                                <p>Logout</p>
+                            </a>
+                            <form id="logout-form-sidebar-dokter" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                @csrf
+                            </form>
+                        </li>
+                @endif
+
+                {{-- ================================================= --}}
+                {{--                      PERAWAT MENU (role_id == 3)     --}}
+                {{-- ================================================= --}}
+                @if(session('user_role') == 3)
+                    <ul class="nav sidebar-menu flex-column" data-lte-toggle="treeview" role="menu" data-accordion="false">
+
+                        <li class="nav-item">
+                            <a href="{{ route('perawat.dashboard') }}" class="nav-link {{ request()->routeIs('perawat.dashboard') ? 'active' : '' }}">
+                                <i class="nav-icon fa-solid fa-gauge"></i>
+                                <p>Dashboard</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-header">KLINIK VETERINER</li>
+                        <li class="nav-item">
+                            <a href="{{ route('perawat.pets.index') }}" class="nav-link {{ request()->routeIs('perawat.pets.*') ? 'active' : '' }}">
+                                <i class="nav-icon fas fa-cat"></i>
+                                <p>View Data Pasien</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="{{ route('perawat.rekam-medis.index') }}" class="nav-link {{ request()->routeIs('perawat.rekam-medis.*') ? 'active' : '' }}">
+                                <i class="nav-icon fas fa-notes-medical"></i>
+                                <p>Rekam Medis (CRUD)</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="{{ route('perawat.profile.show') }}" class="nav-link {{ request()->routeIs('perawat.profile.*') ? 'active' : '' }}">
+                                <i class="nav-icon fas fa-user"></i>
+                                <p>Profil Perawat</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-header">ACCOUNT</li>
+                        <li class="nav-item">
+                            <a href="{{ route('logout') }}" class="nav-link" onclick="event.preventDefault(); document.getElementById('logout-form-sidebar-perawat').submit();">
+                                <i class="nav-icon fas fa-sign-out-alt"></i>
+                                <p>Logout</p>
+                            </a>
+                            <form id="logout-form-sidebar-perawat" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                @csrf
+                            </form>
+                        </li>
+                @endif
+
+                {{-- ================================================= --}}
+                {{--                      RESEPSIONIS MENU (role_id == 4)     --}}
+                {{-- ================================================= --}}
+                @if(session('user_role') == 4)
+                    <ul class="nav sidebar-menu flex-column" data-lte-toggle="treeview" role="menu" data-accordion="false">
+
+                        <li class="nav-item">
+                            <a href="{{ route('resepsionis.dashboard') }}" class="nav-link {{ request()->routeIs('resepsionis.dashboard') ? 'active' : '' }}">
+                                <i class="nav-icon fa-solid fa-gauge"></i>
+                                <p>Dashboard</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-header">MANAJEMEN DATA PASIEN</li>
+                        <li class="nav-item"><a href="{{ route('resepsionis.pets.index') }}" class="nav-link {{ request()->routeIs('resepsionis.pets.*') ? 'active' : '' }}"><i class="nav-icon fas fa-heartbeat"></i><p>Data Pasien (Hewan)</p></a></li>
+                        <li class="nav-item"><a href="{{ route('resepsionis.pemilik.index') }}" class="nav-link {{ request()->routeIs('resepsionis.pemilik.*') ? 'active' : '' }}"><i class="nav-icon fas fa-user-friends"></i><p>Data Pemilik</p></a></li>
+
+                        <li class="nav-header">MANAJEMEN TEMU DOKTER</li>
+                        <li class="nav-item"><a href="{{ route('resepsionis.temu-dokter.index') }}" class="nav-link {{ request()->routeIs('resepsionis.temu-dokter.*') ? 'active' : '' }}"><i class="nav-icon fas fa-calendar-check"></i><p>Janji Temu Dokter</p></a></li>
+
+                        <li class="nav-header">ACCOUNT</li>
+                        <li class="nav-item">
+                            <a href="{{ route('logout') }}" class="nav-link" onclick="event.preventDefault(); document.getElementById('logout-form-sidebar-resepsionis').submit();">
+                                <i class="nav-icon fas fa-sign-out-alt"></i>
+                                <p>Logout</p>
+                            </a>
+                            <form id="logout-form-sidebar-resepsionis" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                @csrf
+                            </form>
+                        </li>
+                @endif
+
+                {{-- ================================================= --}}
+                {{--                      PEMILIK MENU (role_id == 5)     --}}
+                {{-- ================================================= --}}
+                @if(session('user_role') == 5)
+                    <ul class="nav sidebar-menu flex-column" data-lte-toggle="treeview" role="menu" data-accordion="false">
+
+                        <li class="nav-item">
+                            <a href="{{ route('pemilik.dashboard') }}" class="nav-link {{ request()->routeIs('pemilik.dashboard') ? 'active' : '' }}">
+                                <i class="nav-icon fa-solid fa-gauge"></i>
+                                <p>Dashboard</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-header">DATA PELIHARAAN</li>
+                        <li class="nav-item"><a href="{{ route('pemilik.pets.index') }}" class="nav-link {{ request()->routeIs('pemilik.pets.*') ? 'active' : '' }}"><i class="nav-icon fas fa-paw"></i><p>Data Peliharaan Saya</p></a></li>
+
+                        <li class="nav-header">JADWAL KLINIK</li>
+                        <li class="nav-item"><a href="{{ route('pemilik.temu-dokter.index') }}" class="nav-link {{ request()->routeIs('pemilik.temu-dokter.*') ? 'active' : '' }}"><i class="nav-icon fas fa-calendar-check"></i><p>Janji Temu Dokter</p></a></li>
+                        <li class="nav-item"><a href="{{ route('pemilik.rekam-medis.index') }}" class="nav-link {{ request()->routeIs('pemilik.rekam-medis.*') ? 'active' : '' }}"><i class="nav-icon fas fa-history"></i><p>Rekam Medis</p></a></li>
+
+                        <li class="nav-header">ACCOUNT</li>
+                        <li class="nav-item">
+                            <a href="{{ route('logout') }}" class="nav-link" onclick="event.preventDefault(); document.getElementById('logout-form-sidebar-pemilik').submit();">
+                                <i class="nav-icon fas fa-sign-out-alt"></i>
+                                <p>Logout</p>
+                            </a>
+                            <form id="logout-form-sidebar-pemilik" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                @csrf
+                            </form>
+                        </li>
                 @endif
         </nav>
     </div>
     <!-- /.sidebar -->
+
+    <!-- Logout Button -->
+    <div class="sidebar-footer">
+        <form action="{{ route('logout') }}" method="POST" class="d-flex">
+            @csrf
+            <button type="submit" class="btn btn-danger btn-block w-100">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </button>
+        </form>
+    </div>
 </aside>
 
 <!-- Main content -->
