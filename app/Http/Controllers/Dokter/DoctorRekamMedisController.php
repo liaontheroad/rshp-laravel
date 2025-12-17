@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 
-class RekamMedisController extends Controller
+class DoctorRekamMedisController extends Controller
 {
     /**
      * Display a listing of today's appointments for the medical records queue.

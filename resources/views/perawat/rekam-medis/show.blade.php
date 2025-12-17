@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends('layouts.app')
 
 @section('title', 'Detail Rekam Medis')
 
@@ -11,7 +11,6 @@
                 <div class="card-header">
                     <h3 class="card-title">Detail Rekam Medis</h3>
                     <div class="card-tools">
-                        <a href="{{ route('perawat.rekam-medis.edit', $rekamMedis->idrekam_medis) }}" class="btn btn-sm btn-warning">Edit</a>
                         <a href="{{ route('perawat.rekam-medis.index') }}" class="btn btn-sm btn-secondary">Kembali</a>
                     </div>
                 </div>
@@ -21,10 +20,10 @@
                         <dd class="col-sm-9">{{ $rekamMedis->idrekam_medis }}</dd>
 
                         <dt class="col-sm-3">Nama Hewan</dt>
-                        <dd class="col-sm-9">{{ $rekamMedis->pet->nama_hewan ?? 'N/A' }}</dd>
+                        <dd class="col-sm-9">{{ $rekamMedis->pet->nama ?? 'N/A' }}</dd>
 
                         <dt class="col-sm-3">Pemilik</dt>
-                        <dd class="col-sm-9">{{ $rekamMedis->pet->pemilik->nama ?? 'N/A' }}</dd>
+                        <dd class="col-sm-9">{{ $rekamMedis->pet->pemilik->user->nama ?? 'N/A' }}</dd>
 
                         <dt class="col-sm-3">Anamnesa</dt>
                         <dd class="col-sm-9">{{ $rekamMedis->anamnesa }}</dd>
@@ -36,13 +35,10 @@
                         <dd class="col-sm-9">{{ $rekamMedis->diagnosa }}</dd>
 
                         <dt class="col-sm-3">Dokter Pemeriksa</dt>
-                        <dd class="col-sm-9">{{ $rekamMedis->dokter->user->name ?? 'N/A' }}</dd>
+                        <dd class="col-sm-9">{{ $rekamMedis->temuDokter->dokter->user->nama ?? $rekamMedis->dokter->user->nama ?? 'N/A' }}</dd>
 
                         <dt class="col-sm-3">Tanggal Dibuat</dt>
                         <dd class="col-sm-9">{{ $rekamMedis->created_at ? \Carbon\Carbon::parse($rekamMedis->created_at)->format('d/m/Y H:i') : 'N/A' }}</dd>
-
-                        <dt class="col-sm-3">Terakhir Diupdate</dt>
-                        <dd class="col-sm-9">{{ $rekamMedis->updated_at ? \Carbon\Carbon::parse($rekamMedis->updated_at)->format('d/m/Y H:i') : 'N/A' }}</dd>
                     </dl>
 
                     @if($rekamMedis->detailRekamMedis->count() > 0)
@@ -57,13 +53,13 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach($rekamMedis->detailRekamMedis as $detail)
-                                        <tr>
-                                            <td>{{ $detail->kodeTindakanTerapi->kode_tindakan ?? 'N/A' }}</td>
-                                            <td>{{ $detail->kodeTindakanTerapi->nama_tindakan ?? 'N/A' }}</td>
-                                            <td>{{ $detail->kodeTindakanTerapi->deskripsi ?? 'N/A' }}</td>
-                                        </tr>
-                                    @endforeach
+                                @foreach($rekamMedis->detailRekamMedis as $detail)
+                                    <tr>
+                                        <td>{{ $detail->kodeTindakanTerapi->kode ?? 'N/A' }}</td>
+                                        <td>{{ $detail->kodeTindakanTerapi->deskripsi_tindakan_terapi ?? 'N/A' }}</td>
+                                        <td>{{ $detail->kodeTindakanTerapi->deskripsi_tindakan_terapi ?? 'N/A' }}</td>
+                                    </tr>
+                                @endforeach
                                 </tbody>
                             </table>
                         </div>

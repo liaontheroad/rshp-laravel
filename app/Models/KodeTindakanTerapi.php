@@ -10,11 +10,30 @@ class KodeTindakanTerapi extends Model
     use HasFactory;
 
     protected $table = 'kode_tindakan_terapi';
-    protected $primaryKey = 'idkode_tindakan_terapi';
+    protected $primaryKey = 'idkode_tindakan_terapi'; // Match your schema
+    public $incrementing = true;
+    protected $keyType = 'int';
     public $timestamps = false;
 
+
     // Fillable fields sesuai struktur tabel
-    protected $fillable = ['kode', 'deskripsi', 'idkategori', 'idkategori_klinis'];
+    protected $fillable = ['kode', 'deskripsi_tindakan_terapi', 'idkategori', 'idkategori_klinis'];
+
+    // Accessors for view compatibility
+    public function getKodeTindakanAttribute()
+    {
+        return $this->kode;
+    }
+
+    public function getNamaTindakanAttribute()
+    {
+        return $this->deskripsi_tindakan_terapi;
+    }
+
+    public function getDeskripsiAttribute()
+    {
+        return $this->deskripsi_tindakan_terapi;
+    }
 
     public function kategori()
     {

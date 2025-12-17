@@ -5,24 +5,22 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Dokter extends Model
+class Perawat extends Model
 {
     use HasFactory;
 
-    protected $table = 'dokter';
-
+    protected $table = 'perawat';
 
     protected $fillable = [
-        'id_user',        // Foreign Key ke tabel user
         'alamat',
         'no_hp',
-        'bidang_dokter',
-        'jenis_kelamin',  // Enum/Varchar(1)
+        'jenis_kelamin',
+        'pendidikan',
+        'id_user'
     ];
 
-   
     public function user()
     {
-        return $this->belongsTo(User::class, 'id_user', 'iduser');
+        return $this->belongsTo(User::class, 'id_user');
     }
 }

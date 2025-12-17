@@ -9,7 +9,7 @@ use App\Models\RoleUser;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class TemuDokterController extends Controller
+class ResepsionisTemuDokterController extends Controller
 {
     public function index()
     {

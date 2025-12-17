@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends('layouts.app')
 
 @section('title', 'Detail Pasien')
 
@@ -9,7 +9,7 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title">Detail Pasien: {{ $pet->nama_hewan }}</h3>
+                    <h3 class="card-title">Detail Pasien: {{ $pet->nama }}</h3>
                     <div class="card-tools">
                         <a href="{{ route('perawat.pets.index') }}" class="btn btn-sm btn-secondary">Kembali</a>
                     </div>
@@ -20,7 +20,7 @@
                         <dd class="col-sm-9">{{ $pet->idpet }}</dd>
 
                         <dt class="col-sm-3">Nama Hewan</dt>
-                        <dd class="col-sm-9">{{ $pet->nama_hewan }}</dd>
+                        <dd class="col-sm-9">{{ $pet->nama }}</dd>
 
                         <dt class="col-sm-3">Jenis Hewan</dt>
                         <dd class="col-sm-9">{{ $pet->jenisHewan->nama_jenis ?? 'N/A' }}</dd>

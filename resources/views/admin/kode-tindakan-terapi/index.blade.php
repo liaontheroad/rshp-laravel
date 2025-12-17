@@ -57,8 +57,8 @@
                                 <td>{{ $item->idkode_tindakan_terapi }}</td>
                                 <td><strong>{{ $item->kode }}</strong></td>
                                 <td>{{ $item->deskripsi }}</td>
-                                <td>{{ $item->kategori->nama_kategori ?? 'N/A' }}</td>
-                                <td>{{ $item->kategoriKlinis->nama_kategori_klinis ?? 'N/A' }}</td>
+                                <td>{{ $item->kategori_nama ?? 'N/A' }}</td>
+                                <td>{{ $item->kategori_klinis_nama ?? 'N/A' }}</td>
                                 
                                 <td class="text-center d-flex justify-content-center gap-2">
                                     {{-- Link Edit --}}

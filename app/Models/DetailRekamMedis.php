@@ -15,6 +15,7 @@ class DetailRekamMedis extends Model
     protected $fillable = [
         'idrekam_medis',
         'idkode_tindakan_terapi',
+        'detail',
     ];
 
     public $timestamps = false;
@@ -26,8 +27,12 @@ class DetailRekamMedis extends Model
     }
 
     // Relationship with KodeTindakanTerapi
-    public function kodeTindakanTerapi()
-    {
-        return $this->belongsTo(KodeTindakanTerapi::class, 'idkode_tindakan_terapi', 'idkode_tindakan_terapi');
-    }
+public function kodeTindakanTerapi()
+{
+    return $this->belongsTo(
+        KodeTindakanTerapi::class, 
+        'idkode_tindakan_terapi', // Foreign key in detail_rekam_medis table
+        'idkode_tindakan_terapi'  // Primary key in kode_tindakan_terapi table
+    );
+}
 }

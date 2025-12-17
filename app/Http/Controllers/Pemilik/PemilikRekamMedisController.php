@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
-class RekamMedisController extends Controller
+class PemilikRekamMedisController extends Controller
 {
     // ==========================
     // INDEX — Daftar Riwayat Medis

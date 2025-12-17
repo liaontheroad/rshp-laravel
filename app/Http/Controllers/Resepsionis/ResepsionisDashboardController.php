@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Resepsionis;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class DashboardController extends Controller
+class ResepsionisDashboardController extends Controller
 {
     public function index()
     {

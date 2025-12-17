@@ -1,8 +1,8 @@
 @extends('layouts.app')
 
-@section('title', 'Profil Perawat')
+@section('title', 'Profil Dokter')
 
-@section('content-header', 'Profil Perawat')
+@section('content-header', 'Profil Dokter')
 
 @section('content')
     <div class="container-fluid">
@@ -10,7 +10,7 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">Profil Perawat</h3>
+                        <h3 class="card-title">Profil Dokter</h3>
                     </div>
                     <div class="card-body">
                         @if(session('error'))
@@ -21,13 +21,13 @@
                            {{-- KOLOM KIRI: FOTO DAN NAMA UTAMA --}}
                             <div class="col-md-4 text-center mb-4 mb-md-0">
                                 {{-- URL GAMBAR SUDAH DIGANTI --}}
-                                <img src="https://i.pinimg.com/736x/cb/17/d1/cb17d1881a9b261f6a5397cdccd6dfb5.jpg"
+                                <img src="https://i.pinimg.com/736x/4e/b7/0b/4eb70b87e6b9be59a89f25f081dc2420.jpg"
                                     alt="Profile Picture"
                                     class="rounded-circle img-thumbnail mb-3 shadow"
                                     onerror="this.onerror=null; this.src='https://placehold.co/150x150/EEEEEE/333333?text=Profile';"> {{-- Menambahkan fallback --}}
                                     
-                                <h4>{{ $perawat->user->nama ?? 'N/A' }}</h4>
-                                <p class="text-muted mb-0">Perawat</p>
+                                <h4>{{ $dokter->user->nama ?? 'N/A' }}</h4>
+                                <p class="text-muted mb-0">Dokter</p>
                             </div>
 
                             <div class="col-md-8">
@@ -35,27 +35,27 @@
 
                                 <div class="mb-3">
                                     <label class="form-label fw-bold text-muted small text-uppercase">Nama Lengkap</label>
-                                    <p class="fs-5">{{ $perawat->user->nama ?? 'N/A' }}</p>
+                                    <p class="fs-5">{{ $dokter->user->nama ?? 'N/A' }}</p>
                                 </div>
 
                                 <div class="mb-3">
                                     <label class="form-label fw-bold text-muted small text-uppercase">Alamat</label>
-                                    <p class="fs-5">{{ $perawat->alamat ?? 'N/A' }}</p>
+                                    <p class="fs-5">{{ $dokter->alamat ?? 'N/A' }}</p>
                                 </div>
 
                                 <div class="mb-3">
                                     <label class="form-label fw-bold text-muted small text-uppercase">No. HP</label>
-                                    <p class="fs-5">{{ $perawat->no_hp ?? 'N/A' }}</p>
+                                    <p class="fs-5">{{ $dokter->no_hp ?? 'N/A' }}</p>
                                 </div>
 
                                 <div class="mb-3">
                                     <label class="form-label fw-bold text-muted small text-uppercase">Jenis Kelamin</label>
-                                    <p class="fs-5">{{ $perawat->jenis_kelamin ?? 'N/A' }}</p>
+                                    <p class="fs-5">{{ $dokter->jenis_kelamin ?? 'N/A' }}</p>
                                 </div>
 
                                 <div class="mb-3">
                                     <label class="form-label fw-bold text-muted small text-uppercase">Pendidikan</label>
-                                    <p class="fs-5">{{ $perawat->pendidikan ?? 'N/A' }}</p>
+                                    <p class="fs-5">{{ $dokter->pendidikan ?? 'N/A' }}</p>
                                 </div>
 
                                 <div class="mt-4">

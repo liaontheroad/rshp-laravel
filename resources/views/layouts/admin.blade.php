@@ -19,6 +19,21 @@
    <link rel="stylesheet" href="{{ asset('adminlte/dist/css/adminlte.min.css') }}">
 
     @stack('styles')
+
+    <style>
+        .user-image {
+            border-radius: 50% !important;
+            object-fit: cover;
+            width: 32px !important;
+            height: 32px !important;
+        }
+        .user-header img {
+            border-radius: 50% !important;
+            object-fit: cover;
+            width: 80px !important;
+            height: 80px !important;
+        }
+    </style>
 </head>
 
 <body class="layout-fixed sidebar-expand-lg bg-body-tertiary">

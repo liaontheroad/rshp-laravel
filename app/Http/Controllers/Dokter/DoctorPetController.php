@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Pet; // Assuming you have a Pet model
 use Illuminate\Http\Request;
 
-class PetController extends Controller
+class DoctorPetController extends Controller
 {
     /**
      * Display a listing of the resource.

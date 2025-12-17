@@ -50,6 +50,6 @@ class User extends Authenticatable
     // Relasi ke Perawat
     public function perawat()
     {
-        return $this->hasOne(Perawat::class, 'iduser', 'iduser');
+        return $this->hasOne(Perawat::class, 'id_user', 'iduser');
     }
 }

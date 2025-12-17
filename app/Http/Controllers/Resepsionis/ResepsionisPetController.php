@@ -10,7 +10,7 @@ use App\Models\JenisHewan;
 use App\Models\RasHewan;
 use Illuminate\Validation\Rule;
 
-class PetController extends Controller
+class ResepsionisPetController extends Controller
 {
     public function index()
     {
